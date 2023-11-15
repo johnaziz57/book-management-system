@@ -1,10 +1,7 @@
 package com.john.bookmanagementsystem.model
 
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import jakarta.persistence.*
 
 @Entity
 @Table(name = "Authors")
-data class Author(@Id @GeneratedValue val id: Int, val name: String /*val books: List<Book>*/)
+data class Author(@Id @GeneratedValue val id: Long, val name: String, @ManyToMany val books: Set<Book>)
