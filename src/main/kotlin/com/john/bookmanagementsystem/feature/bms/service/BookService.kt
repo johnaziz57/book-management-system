@@ -14,6 +14,16 @@ class BookService(@Autowired private val bookRepository: BookRepository) {
         return bookRepository.findAll()
     }
 
+    fun findById(id: Long): Book {
+        bookRepository.findById(id).let {
+            if (it.isPresent) {
+                return it.get()
+            } else {
+                throw ServiceResponseException("Book not found", HttpStatus.NOT_FOUND)
+            }
+        }
+    }
+
     fun createBook(bookDTO: BookDTO) {
         bookRepository.save(bookDTO.toEntity())
     }
@@ -26,7 +36,11 @@ class BookService(@Autowired private val bookRepository: BookRepository) {
         bookRepository.findById(id).ifPresentOrElse({
             bookRepository.save(bookDTO.toEntity())
         }, {
-            throw ServiceResponseException("Book not found", HttpStatus.BAD_REQUEST)
+            throw ServiceResponseException("Book not found", HttpStatus.NOT_FOUND)
         })
+    }
+
+    fun deleteBook(id: Long) {
+        bookRepository.deleteById(id)
     }
 }
