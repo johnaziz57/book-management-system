@@ -3,7 +3,7 @@ package com.john.bookmanagementsystem.model
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "Books")
+@Table(name = "Book")
 data class Book(
     @Id @GeneratedValue val id: Long,
     val title: String,
