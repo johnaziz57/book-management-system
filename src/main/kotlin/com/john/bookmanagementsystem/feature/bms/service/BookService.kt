@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class BookService(@Autowired private val bookRepository: BookRepository) {
-    fun findAll(): List<Book> {
-        return bookRepository.findAll()
+    fun findAll(): List<BookDTO> {
+        return bookRepository.findAll().map { it.toDTO() }
     }
 
     fun findById(id: Long): Book {

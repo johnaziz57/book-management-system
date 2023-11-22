@@ -15,7 +15,7 @@ import javax.validation.Valid
 class BookController(@Autowired private val bookService: BookService) {
 
     @GetMapping
-    fun findAll(): ResponseEntity<List<Book>> {
+    fun findAll(): ResponseEntity<List<BookDTO>> {
         return ResponseEntity.ok(bookService.findAll())
     }
 
