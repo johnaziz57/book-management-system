@@ -24,8 +24,8 @@ class BookService(@Autowired private val bookRepository: BookRepository) {
         }
     }
 
-    fun createBook(bookDTO: BookDTO) {
-        bookRepository.save(bookDTO.toEntity())
+    fun createBook(bookDTO: BookDTO): Book {
+        return bookRepository.save(bookDTO.toEntity())
     }
 
     fun removeBook(id: Long) {
