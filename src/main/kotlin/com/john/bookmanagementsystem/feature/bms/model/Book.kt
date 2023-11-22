@@ -10,6 +10,7 @@ data class Book(
     @Id @GeneratedValue val id: Long = -1,
     val title: String = "",
     @field:ISBN // this a different validation on the persistence level
+    @Column(unique = true)
     val ISBN: String = "",
 
     @ManyToMany
