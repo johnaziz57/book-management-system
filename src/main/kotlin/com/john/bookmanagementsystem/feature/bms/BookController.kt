@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("/books")
+@RequestMapping("/book")
 @Validated
 class BookController(@Autowired private val bookService: BookService) {
 
@@ -19,6 +19,8 @@ class BookController(@Autowired private val bookService: BookService) {
         return ResponseEntity.ok(bookService.findAll())
     }
 
+    // TODO add @Transactional
+    // TODO handle if passing a DTO but the authors are not yet in the Database
     @PostMapping
     fun createBook(@RequestBody @Valid bookDTO: BookDTO): ResponseEntity<Book> {
         // @Valid will look for  validation in the DTO class
