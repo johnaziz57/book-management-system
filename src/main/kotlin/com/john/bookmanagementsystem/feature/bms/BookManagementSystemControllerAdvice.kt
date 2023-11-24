@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 
 @ControllerAdvice // This is another presentation layer helper, not necessary attached to same rest controller
 @Order(Ordered.HIGHEST_PRECEDENCE) // order of handling the exceptions, highest means first one to handle exception
-class BookControllerAdvice {
+class BookManagementSystemControllerAdvice {
 
     // tying this ControllerAdvice to every exception of type ServiceResponseException
     @ExceptionHandler(ServiceResponseException::class)

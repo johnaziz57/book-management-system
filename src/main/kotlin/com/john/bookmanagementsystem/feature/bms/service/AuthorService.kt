@@ -11,4 +11,12 @@ class AuthorService(@Autowired private val authorRepository: AuthorRepository) {
     fun findAll(): List<AuthorDTO> {
         return authorRepository.findAll().map { it.toDTO() }
     }
+
+    fun findByNameLike(nameLike: String): List<AuthorDTO> {
+        return authorRepository.findByNameLike(nameLike).map { it.toDTO() }
+    }
+
+    fun createAuthor(authorDTO: AuthorDTO): AuthorDTO {
+        return authorRepository.save(authorDTO.toEntity()).toDTO()
+    }
 }
