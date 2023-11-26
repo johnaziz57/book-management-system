@@ -50,7 +50,7 @@ class BookService(@Autowired private val bookRepository: BookRepository) {
     }
 
     fun findByTitle(title: String): List<BookDTO> {
-        return bookRepository.findByTitleContaining(title).map { it.toDTO() }
+        return bookRepository.findByTitleContainingIgnoreCase(title).map { it.toDTO() }
     }
 
     fun findByISBN(isbn: String): Book? {

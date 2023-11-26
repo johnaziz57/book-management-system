@@ -15,5 +15,5 @@ interface BookRepository : JpaRepository<Book, Long> {
 //    )
 //    fun findByTitleLike(@Param("title") title: String): List<Book>
 
-    fun findByTitleContaining(title: String): List<Book>
+    fun findByTitleContainingIgnoreCase(title: String): List<Book>
 }
