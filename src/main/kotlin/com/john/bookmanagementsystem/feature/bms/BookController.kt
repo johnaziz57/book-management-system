@@ -25,4 +25,9 @@ class BookController(@Autowired private val bookService: BookService) {
         // @Valid will look for  validation in the DTO class
         return ResponseEntity.ok(bookService.createBook(bookDTO))
     }
+
+    @GetMapping("findByTitle")
+    fun findBookByTitle(@RequestParam title: String): ResponseEntity<List<BookDTO>> {
+        return ResponseEntity.ok(bookService.findByTitle(title))
+    }
 }

@@ -49,7 +49,11 @@ class BookService(@Autowired private val bookRepository: BookRepository) {
         bookRepository.deleteById(id)
     }
 
-    private fun findByISBN(isbn: String): Book? {
+    fun findByTitle(title: String): List<BookDTO> {
+        return bookRepository.findByTitleContaining(title).map { it.toDTO() }
+    }
+
+    fun findByISBN(isbn: String): Book? {
         return bookRepository.findByISBN(isbn)
     }
 }

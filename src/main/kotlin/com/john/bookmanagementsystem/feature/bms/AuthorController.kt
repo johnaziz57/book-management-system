@@ -18,7 +18,7 @@ class AuthorController(@Autowired private val authorService: AuthorService) {
     }
 
     @GetMapping("/findByName")
-    fun findByNameLike(name: String): ResponseEntity<List<AuthorDTO>> {
+    fun findByNameLike(@RequestParam name: String): ResponseEntity<List<AuthorDTO>> {
         return ResponseEntity.ok(authorService.findByNameLike(name))
     }
 
