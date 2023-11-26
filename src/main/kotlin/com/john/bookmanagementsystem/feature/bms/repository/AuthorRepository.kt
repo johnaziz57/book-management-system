@@ -4,5 +4,5 @@ import com.john.bookmanagementsystem.feature.bms.model.Author
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface AuthorRepository : JpaRepository<Author, Long> {
-    fun findByNameLike(nameLike: String): List<Author>
+    fun findByNameContainingIgnoreCase(nameLike: String): List<Author>
 }

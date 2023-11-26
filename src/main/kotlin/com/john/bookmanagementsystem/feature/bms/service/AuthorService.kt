@@ -12,8 +12,8 @@ class AuthorService(@Autowired private val authorRepository: AuthorRepository) {
         return authorRepository.findAll().map { it.toDTO() }
     }
 
-    fun findByNameLike(nameLike: String): List<AuthorDTO> {
-        return authorRepository.findByNameLike(nameLike).map { it.toDTO() }
+    fun findByName(nameLike: String): List<AuthorDTO> {
+        return authorRepository.findByNameContainingIgnoreCase(nameLike).map { it.toDTO() }
     }
 
     fun createAuthor(authorDTO: AuthorDTO): AuthorDTO {

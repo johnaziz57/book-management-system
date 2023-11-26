@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("/authors")
+@RequestMapping("/author")
 @Validated
 class AuthorController(@Autowired private val authorService: AuthorService) {
     @GetMapping
@@ -19,7 +19,7 @@ class AuthorController(@Autowired private val authorService: AuthorService) {
 
     @GetMapping("/findByName")
     fun findByNameLike(@RequestParam name: String): ResponseEntity<List<AuthorDTO>> {
-        return ResponseEntity.ok(authorService.findByNameLike(name))
+        return ResponseEntity.ok(authorService.findByName(name))
     }
 
     @PostMapping("/create")
