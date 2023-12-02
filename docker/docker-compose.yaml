@@ -10,3 +10,13 @@ services:
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
+  db-admin:
+    image: dpage/pgadmin4:7.7
+    environment:
+      PGADMIN_DEFAULT_EMAIL: s@s.com
+      PGADMIN_DEFAULT_PASSWORD: 0
+      PGADMIN_LISTEN_PORT: 80
+    ports:
+      - 15432:80
+    depends_on:
+      - db
