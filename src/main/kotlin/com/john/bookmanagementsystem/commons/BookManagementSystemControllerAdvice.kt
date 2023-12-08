@@ -1,6 +1,5 @@
-package com.john.bookmanagementsystem.feature.bms
+package com.john.bookmanagementsystem.commons
 
-import com.john.bookmanagementsystem.commons.ServiceResponseException
 import com.john.bookmanagementsystem.commons.dto.ErrorServiceResponse
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order

@@ -1,6 +1,7 @@
-package com.john.bookmanagementsystem.feature.bms.model
+package com.john.bookmanagementsystem.feature.author.model
 
-import com.john.bookmanagementsystem.feature.bms.dto.AuthorDTO
+import com.john.bookmanagementsystem.feature.author.dto.AuthorDTO
+import com.john.bookmanagementsystem.feature.book.model.Book
 import jakarta.persistence.*
 
 @Entity

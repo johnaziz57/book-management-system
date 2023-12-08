@@ -1,6 +1,6 @@
-package com.john.bookmanagementsystem.feature.bms.repository
+package com.john.bookmanagementsystem.feature.book.repository
 
-import com.john.bookmanagementsystem.feature.bms.model.Book
+import com.john.bookmanagementsystem.feature.book.model.Book
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
@@ -8,12 +8,6 @@ import org.springframework.stereotype.Repository
 // provides more complex findBy.. to be used in services
 interface BookRepository : JpaRepository<Book, Long> {
     fun findByISBN(isbn: String): Book?
-
-//    @Query(
-//        value = "SELECT b from Book b WHERE :title LIKE '%'b.title'%'",
-//        nativeQuery = true
-//    )
-//    fun findByTitleLike(@Param("title") title: String): List<Book>
 
     fun findByTitleContainingIgnoreCase(title: String): List<Book>
 }

@@ -1,6 +1,7 @@
-package com.john.bookmanagementsystem.feature.bms.dto
+package com.john.bookmanagementsystem.feature.book.dto
 
-import com.john.bookmanagementsystem.feature.bms.model.Book
+import com.john.bookmanagementsystem.feature.author.dto.AuthorDTO
+import com.john.bookmanagementsystem.feature.book.model.Book
 import javax.validation.Valid
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Size

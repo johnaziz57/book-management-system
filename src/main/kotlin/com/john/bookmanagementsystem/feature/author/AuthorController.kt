@@ -1,7 +1,7 @@
-package com.john.bookmanagementsystem.feature.bms
+package com.john.bookmanagementsystem.feature.author
 
-import com.john.bookmanagementsystem.feature.bms.dto.AuthorDTO
-import com.john.bookmanagementsystem.feature.bms.service.AuthorService
+import com.john.bookmanagementsystem.feature.author.dto.AuthorDTO
+import com.john.bookmanagementsystem.feature.book.service.AuthorService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated

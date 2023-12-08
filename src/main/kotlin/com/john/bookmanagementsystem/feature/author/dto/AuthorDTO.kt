@@ -1,6 +1,6 @@
-package com.john.bookmanagementsystem.feature.bms.dto
+package com.john.bookmanagementsystem.feature.author.dto
 
-import com.john.bookmanagementsystem.feature.bms.model.Author
+import com.john.bookmanagementsystem.feature.author.model.Author
 import jakarta.persistence.Column
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.Id

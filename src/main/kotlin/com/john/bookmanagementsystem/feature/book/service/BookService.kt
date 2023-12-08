@@ -1,9 +1,9 @@
-package com.john.bookmanagementsystem.feature.bms.service
+package com.john.bookmanagementsystem.feature.book.service
 
 import com.john.bookmanagementsystem.commons.ServiceResponseException
-import com.john.bookmanagementsystem.feature.bms.dto.BookDTO
-import com.john.bookmanagementsystem.feature.bms.model.Book
-import com.john.bookmanagementsystem.feature.bms.repository.BookRepository
+import com.john.bookmanagementsystem.feature.book.dto.BookDTO
+import com.john.bookmanagementsystem.feature.book.model.Book
+import com.john.bookmanagementsystem.feature.book.repository.BookRepository
 import jakarta.transaction.Transactional
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus

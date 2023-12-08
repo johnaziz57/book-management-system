@@ -1,6 +1,7 @@
-package com.john.bookmanagementsystem.feature.bms.model
+package com.john.bookmanagementsystem.feature.book.model
 
-import com.john.bookmanagementsystem.feature.bms.dto.BookDTO
+import com.john.bookmanagementsystem.feature.author.model.Author
+import com.john.bookmanagementsystem.feature.book.dto.BookDTO
 import jakarta.persistence.*
 import org.hibernate.validator.constraints.ISBN
 

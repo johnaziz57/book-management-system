@@ -1,6 +1,6 @@
-package com.john.bookmanagementsystem.feature.bms.repository
+package com.john.bookmanagementsystem.feature.author.repository
 
-import com.john.bookmanagementsystem.feature.bms.model.Author
+import com.john.bookmanagementsystem.feature.author.model.Author
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface AuthorRepository : JpaRepository<Author, Long> {
