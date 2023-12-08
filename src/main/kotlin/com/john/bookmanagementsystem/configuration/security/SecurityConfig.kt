@@ -24,8 +24,6 @@ class SecurityConfig constructor(@Autowired private val userDetailsService: Cust
         httpSecurity
             .csrf().disable()
             .authorizeHttpRequests()
-            .anyRequest()
-            .authenticated()
             .requestMatchers(HttpMethod.POST, "author")
             .authenticated()
             .and()
