@@ -8,7 +8,7 @@ import jakarta.persistence.Table
 @Entity
 @Table(name = "Person")
 data class User(
-    @Id @GeneratedValue val id: Long,
+    @Id @GeneratedValue val id: Long = -1,
     val role: Role,
     val name: String,
     val userName: String,

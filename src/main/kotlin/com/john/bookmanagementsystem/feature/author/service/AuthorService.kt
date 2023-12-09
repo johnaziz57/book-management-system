@@ -1,4 +1,4 @@
-package com.john.bookmanagementsystem.feature.book.service
+package com.john.bookmanagementsystem.feature.author.service
 
 import com.john.bookmanagementsystem.feature.author.dto.AuthorDTO
 import com.john.bookmanagementsystem.feature.author.repository.AuthorRepository

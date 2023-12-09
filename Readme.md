@@ -23,3 +23,19 @@ This is servlet application
 # Questions
 
 1. Servlet vs Web-flux?
+
+
+# Curl
+````bash
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"username": "john", "password": "password", "name":"john"}' \
+  http://localhost:8080/auth/register
+````
+
+````bash
+curl -X GET \
+  -H "Content-Type: application/json" \
+  http://localhost:8080/book/all
+
+````
