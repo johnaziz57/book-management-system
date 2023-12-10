@@ -22,7 +22,7 @@ class AuthController constructor(
 
     @PostMapping("register")
     fun register(@RequestBody @Valid userDTO: userDTO): ResponseEntity<String> {
-        if (userRepository.existsByUserName(userDTO.userName)) {
+        if (userRepository.existsByUserName(userDTO.username)) {
             return ResponseEntity.badRequest().body("Username is already take")
         }
 
