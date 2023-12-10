@@ -6,7 +6,7 @@ import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Size
 
 
-data class userDTO(
+data class UserDTO(
     val id: Long?,
     @field:Size(max = 100, message = "Name is too long")
     @field:NotBlank(message = "Name is empty")

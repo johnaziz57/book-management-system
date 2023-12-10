@@ -26,13 +26,24 @@ This is servlet application
 
 
 # Curl
+## Register
 ````bash
 curl -X POST \
   -H "Content-Type: application/json" \
-  -d '{"username": "john", "password": "password", "name":"john"}' \
+  -d '{"username": "mark", "password": "password", "name":"mark"}' \
   http://localhost:8080/auth/register
 ````
 
+## Login
+
+````bash
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"username": "mark", "password": "password"}' \
+  http://localhost:8080/auth/login
+````
+
+## List books
 ````bash
 curl -X GET \
   -H "Content-Type: application/json" \

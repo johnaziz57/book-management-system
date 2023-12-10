@@ -34,23 +34,6 @@ class SecurityConfig constructor(@Autowired private val userDetailsService: Cust
     }
 
     @Bean
-    fun users(): UserDetailsService {
-        val user = User.builder()
-            .username("admin")
-            .password("0")
-            .roles("ADMIN")
-            .build()
-
-        val user2 = User.builder()
-            .username("user")
-            .password("0")
-            .roles("USER")
-            .build()
-
-        return InMemoryUserDetailsManager(user, user2)
-    }
-
-    @Bean
     fun authenticationManager(authenticationConfiguration: AuthenticationConfiguration): AuthenticationManager {
         return authenticationConfiguration.authenticationManager
     }
