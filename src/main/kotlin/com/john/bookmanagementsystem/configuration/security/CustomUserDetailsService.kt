@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 
-
+// TODO understand why we need this, why not use a normal user service
 @Service
 class CustomUserDetailsService(@Autowired private val userRepository: UserRepository) : UserDetailsService {
     override fun loadUserByUsername(username: String): UserDetails {

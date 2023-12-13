@@ -9,27 +9,39 @@ import org.springframework.security.config.Customizer
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
 @Configuration
 @EnableWebSecurity
 class SecurityConfig constructor(
     @Autowired private val userDetailsService: CustomUserDetailsService,
+    @Autowired private val jwtAuthEntryPoint: JwtAuthEntryPoint,
+    @Autowired private val jwtAuthenticationFilter: JwtAuthenticationFilter
 ) {
 
     @Bean
     fun securityFilterChain(httpSecurity: HttpSecurity): SecurityFilterChain {
         httpSecurity
-            .csrf().disable()
+            .csrf {
+                it.disable()
+            }
+            .exceptionHandling {
+                it.authenticationEntryPoint(jwtAuthEntryPoint)
+            }
+            .sessionManagement {
+                it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            }
             .authorizeHttpRequests {
                 it.requestMatchers(HttpMethod.POST, "auth/**").permitAll()
                 it.requestMatchers(HttpMethod.GET, "**").permitAll()
                 it.requestMatchers(HttpMethod.POST, "author").authenticated()
             }
             .httpBasic(Customizer.withDefaults())
-
+        httpSecurity.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
         return httpSecurity.build()
     }
 
