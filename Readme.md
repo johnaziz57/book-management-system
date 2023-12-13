@@ -25,9 +25,26 @@ This is servlet application
 1. Servlet vs Web-flux?
 2. Track how all this security is working with debugging
 
+# Notes
+
+## Remote debugging
+
+Don't forget to uncomment the following section in `pom.xml`
+
+```
+    <jvmArguments>
+        -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005
+    </jvmArguments>
+```
+
+The project won't start until you attach a debugger to it
 
 # Curl
-## Register
+
+## User
+
+### Register
+
 ````bash
 curl -X POST \
   -H "Content-Type: application/json" \
@@ -35,7 +52,7 @@ curl -X POST \
   http://localhost:8080/auth/register
 ````
 
-## Login
+### Login
 
 ````bash
 curl -X POST \
@@ -44,10 +61,23 @@ curl -X POST \
   http://localhost:8080/auth/login
 ````
 
-## List books
+## Book
+
+### List books
+
 ````bash
 curl -X GET \
   -H "Content-Type: application/json" \
   http://localhost:8080/book/all
-
 ````
+
+## Author
+
+### Create Author
+
+```bash
+curl -X POST\
+  -H "Content-Type: application/json" \
+  -d '{"name": "Joan Kathlin Rowlings"}'\
+  http://localhost:8080/author/create
+```
