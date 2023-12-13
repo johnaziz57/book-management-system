@@ -76,7 +76,7 @@ curl -X GET \
 ### Create Author
 
 ```bash
-curl -X POST\
+curl -iX POST\
   -H "Content-Type: application/json" \
   -d '{"name": "Joan Kathlin Rowlings"}'\
   http://localhost:8080/author/create
