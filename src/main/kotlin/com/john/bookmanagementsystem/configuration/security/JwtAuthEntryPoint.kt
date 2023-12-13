@@ -6,7 +6,7 @@ import org.springframework.security.core.AuthenticationException
 import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.stereotype.Component
 
-// To handle failed authentication
+// This is what is called when authentication filter fails aka JwtAuthenticationFilter
 @Component
 class JwtAuthEntryPoint : AuthenticationEntryPoint {
     override fun commence(
