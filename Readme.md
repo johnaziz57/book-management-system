@@ -23,6 +23,7 @@ This is servlet application
 # Questions
 
 1. Servlet vs Web-flux?
+2. Track how all this security is working with debugging
 
 
 # Curl
