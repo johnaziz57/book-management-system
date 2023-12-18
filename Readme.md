@@ -9,16 +9,16 @@ This is servlet application
 5. Finish create controller, with duplicate/ without author/ with author
 6. Make it restful
 7. Error resistance
-8. Spring Authentication
-9. Role base access
-10. Pagination
-11. Maybe change to webflux
+8. Role base access
+9. Pagination
+10. Maybe change to webflux
 
 # DONE
 
 1. Mark ISBN as unique
 2. Prevent creation of books that overrides a previous book. Maybe introduce different endpoints
 3. Investigate why searching by name is not working
+4. Spring Authentication
 
 # Questions
 
