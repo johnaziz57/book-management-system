@@ -29,7 +29,7 @@ class AuthService constructor(
         val user = userDTO.toEntity()
         userRepository.save(user.copy(password = passwordEncoder.encode(user.password)))
 
-        return AuthResponseDTO(jwtTokenProvider.generateToken(user))
+        return AuthResponseDTO(jwtTokenProvider.generateToken(user.userName))
     }
 
     fun login(loginDTO: LoginDTO): AuthResponseDTO {
@@ -37,7 +37,7 @@ class AuthService constructor(
             UsernamePasswordAuthenticationToken(loginDTO.username, loginDTO.password)
         )
         SecurityContextHolder.getContext().authentication = authentication
-        val token = jwtTokenProvider.generateToken(authentication)
+        val token = jwtTokenProvider.generateToken(loginDTO.username)
         return AuthResponseDTO(token)
     }
 }

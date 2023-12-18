@@ -1,36 +1,20 @@
 package com.john.bookmanagementsystem.configuration.security
 
-import com.john.bookmanagementsystem.feature.user.model.User
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.security.Keys
-import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
 class JwtTokenProvider {
 
-    fun generateToken(authentication: Authentication): String {
-        val username = authentication.name
+    fun generateToken(username: String): String {
         val currentDate = Date()
         val expiryDate = Date(currentDate.time + SecurityConstants.JWT_EXPIRY)
-
 
         return Jwts.builder()
             .setSubject(username)
-            .setIssuedAt(currentDate)
-            .setExpiration(expiryDate)
-            .signWith(KEY, SignatureAlgorithm.HS512)
-            .compact()
-    }
-
-    fun generateToken(user: User): String {
-        val currentDate = Date()
-        val expiryDate = Date(currentDate.time + SecurityConstants.JWT_EXPIRY)
-
-        return Jwts.builder()
-            .setSubject(user.userName)
             .setIssuedAt(currentDate)
             .setExpiration(expiryDate)
             .signWith(KEY, SignatureAlgorithm.HS512)
