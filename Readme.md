@@ -46,7 +46,7 @@ The project won't start until you attach a debugger to it
 ### Register
 
 ````bash
-curl -X POST \
+curl -iX POST \
   -H "Content-Type: application/json" \
   -d '{"username": "mark", "password": "password", "name":"mark"}' \
   http://localhost:8080/auth/register
@@ -63,12 +63,11 @@ curl -X POST \
 
 ## Book
 
-### List books
+### List books (authenticated)
 
 ````bash
-curl -X GET \
-  -H "Content-Type: application/json" \
-  http://localhost:8080/book/all
+curl --location 'localhost:8080/book/all' \
+--header 'Authorization: Bearer <token>'
 ````
 
 ## Author

@@ -36,6 +36,7 @@ class SecurityConfig constructor(
             }
             .authorizeHttpRequests {
                 it.requestMatchers(HttpMethod.POST, "auth/**").permitAll()
+                it.requestMatchers(HttpMethod.GET, "book/all").authenticated()
                 it.requestMatchers(HttpMethod.GET, "**").permitAll()
                 it.requestMatchers(HttpMethod.POST, "**").authenticated()
             }
