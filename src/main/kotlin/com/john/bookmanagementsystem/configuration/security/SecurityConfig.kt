@@ -37,7 +37,7 @@ class SecurityConfig constructor(
             .authorizeHttpRequests {
                 it.requestMatchers(HttpMethod.POST, "auth/**").permitAll()
                 it.requestMatchers(HttpMethod.GET, "**").permitAll()
-                it.requestMatchers(HttpMethod.POST, "author").authenticated()
+                it.requestMatchers(HttpMethod.POST, "**").authenticated()
             }
             .httpBasic(Customizer.withDefaults())
         httpSecurity.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
