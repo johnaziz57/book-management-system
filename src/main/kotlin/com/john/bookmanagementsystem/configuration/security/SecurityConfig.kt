@@ -1,5 +1,6 @@
 package com.john.bookmanagementsystem.configuration.security
 
+import com.john.bookmanagementsystem.feature.user.model.Role
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -36,12 +37,14 @@ class SecurityConfig constructor(
             }
             .authorizeHttpRequests {
                 it.requestMatchers(HttpMethod.POST, "auth/**").permitAll()
-                it.requestMatchers(HttpMethod.GET, "book/all").authenticated()
                 it.requestMatchers(HttpMethod.GET, "**").permitAll()
-                it.requestMatchers(HttpMethod.POST, "**").authenticated()
+                it.requestMatchers(HttpMethod.GET, "/book/all").authenticated()
+                it.requestMatchers(HttpMethod.POST, "/book/create").hasAuthority(Role.ADMIN.name)
+                it.requestMatchers(HttpMethod.POST, "/author/create").hasAuthority(Role.ADMIN.name)
             }
             .httpBasic(Customizer.withDefaults())
-        httpSecurity.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
+
         return httpSecurity.build()
     }
 

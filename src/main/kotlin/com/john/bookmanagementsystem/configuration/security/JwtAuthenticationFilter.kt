@@ -20,9 +20,7 @@ class JwtAuthenticationFilter constructor(
     // TODO understand what does this filter do
     // It doesn't feel that much of a filter as much as it is an interceptor to translate JWT to authentication token
     override fun doFilterInternal(
-        request: HttpServletRequest,
-        response: HttpServletResponse,
-        filterChain: FilterChain
+        request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain
     ) {
         getJwtToken(request)?.let { token ->
             if (!jwtTokenProvider.validateJWT(token)) return@let
