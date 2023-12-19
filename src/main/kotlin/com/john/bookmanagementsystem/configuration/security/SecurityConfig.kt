@@ -25,7 +25,7 @@ class SecurityConfig constructor(
 
     @Bean
     fun securityFilterChain(httpSecurity: HttpSecurity): SecurityFilterChain {
-        httpSecurity
+        return httpSecurity
             .csrf {
                 it.disable()
             }
@@ -44,8 +44,7 @@ class SecurityConfig constructor(
             }
             .httpBasic(Customizer.withDefaults())
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
-
-        return httpSecurity.build()
+            .build()
     }
 
     @Bean
