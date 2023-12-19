@@ -36,10 +36,9 @@ class SecurityConfig constructor(
             }
             .authorizeHttpRequests {
                 it.requestMatchers(HttpMethod.POST, "auth/**").permitAll()
-//                it.requestMatchers(HttpMethod.GET, "**").permitAll()
-//                it.requestMatchers(HttpMethod.GET, "book/all").authenticated()
+                it.requestMatchers(HttpMethod.GET, "**").permitAll()
                 it.requestMatchers(HttpMethod.POST, "book/create").hasRole("ADMIN")
-//                it.requestMatchers(HttpMethod.POST, "author/create").hasRole("ADMIN")
+                it.requestMatchers(HttpMethod.POST, "author/create").hasRole("ADMIN")
             }
             .httpBasic(Customizer.withDefaults())
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
