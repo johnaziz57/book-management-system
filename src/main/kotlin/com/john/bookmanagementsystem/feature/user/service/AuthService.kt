@@ -36,6 +36,7 @@ class AuthService constructor(
         val authentication = authenticationManager.authenticate(
             UsernamePasswordAuthenticationToken(loginDTO.username, loginDTO.password)
         )
+
         SecurityContextHolder.getContext().authentication = authentication
         val token = jwtTokenProvider.generateToken(loginDTO.username)
         return AuthResponseDTO(token)

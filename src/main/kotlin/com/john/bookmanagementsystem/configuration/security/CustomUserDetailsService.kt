@@ -2,6 +2,7 @@ package com.john.bookmanagementsystem.configuration.security
 
 import com.john.bookmanagementsystem.feature.user.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -16,7 +17,8 @@ class CustomUserDetailsService(@Autowired private val userRepository: UserReposi
             User.builder()
                 .username(user.userName)
                 .password(user.password)
-                .roles(user.role.toString())
+                .roles("ADMIN")
+                .authorities(SimpleGrantedAuthority("ROLE_ADMIN"))
                 .build()
             // TODO @Giona, why not use UserNameNotFoundException directly instead of ServiceResponseException
         } ?: throw UsernameNotFoundException("user not found")
