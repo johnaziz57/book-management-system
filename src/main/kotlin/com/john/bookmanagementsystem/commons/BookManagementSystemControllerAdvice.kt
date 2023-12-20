@@ -3,6 +3,7 @@ package com.john.bookmanagementsystem.commons
 import com.john.bookmanagementsystem.commons.dto.ErrorServiceResponse
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -18,6 +19,15 @@ class BookManagementSystemControllerAdvice {
             .status(exception.httpStatus)
             .body(
                 ErrorServiceResponse(message = exception.message)
+            )
+    }
+
+    @ExceptionHandler(UnsupportedOperationException::class)
+    fun handleUnsupportedOperationException(exception: UnsupportedOperationException): ResponseEntity<ErrorServiceResponse> {
+        return ResponseEntity
+            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(
+                ErrorServiceResponse(message = "Internal server error")
             )
     }
 }
