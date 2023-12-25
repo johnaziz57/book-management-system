@@ -14,13 +14,13 @@ data class Book(
     @Column(unique = true)
     val ISBN: String = "",
 
-    @ManyToMany
+    @ManyToMany(cascade = [CascadeType.ALL])
     @JoinTable(
         name = "book_author",
         joinColumns = [JoinColumn(name = "book_id")],
         inverseJoinColumns = [JoinColumn(name = "author_id")]
     )
-    val authors: Set<Author> = emptySet(),
+    var authors: Set<Author> = mutableSetOf(),
 ) {
     fun toDTO(): BookDTO {
         // TODO check what will happen if authors have books, would this conversion keep

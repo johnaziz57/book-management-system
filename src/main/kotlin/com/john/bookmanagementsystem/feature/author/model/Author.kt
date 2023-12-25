@@ -9,7 +9,7 @@ import jakarta.persistence.*
 data class Author(
     @Id @GeneratedValue val id: Long = -1,
     val name: String = "",
-    @ManyToMany(mappedBy = "authors") val books: Set<Book> = emptySet(),
+    @ManyToMany(mappedBy = "authors") var books: Set<Book> = mutableSetOf(),
 ) {
     fun toDTO(): AuthorDTO {
         // TODO check what will happen if authors have books, would this conversion keep
