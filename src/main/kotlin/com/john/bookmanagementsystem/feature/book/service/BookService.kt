@@ -1,6 +1,7 @@
 package com.john.bookmanagementsystem.feature.book.service
 
 import com.john.bookmanagementsystem.commons.ServiceResponseException
+import com.john.bookmanagementsystem.feature.author.repository.AuthorRepository
 import com.john.bookmanagementsystem.feature.book.dto.BookDTO
 import com.john.bookmanagementsystem.feature.book.model.Book
 import com.john.bookmanagementsystem.feature.book.repository.BookRepository
@@ -10,7 +11,10 @@ import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 
 @Service
-class BookService(@Autowired private val bookRepository: BookRepository) {
+class BookService(
+    @Autowired private val bookRepository: BookRepository,
+    @Autowired private val authorRepository: AuthorRepository,
+) {
     fun findAll(): List<BookDTO> {
         return bookRepository.findAll().map { it.toDTO() }
     }
@@ -30,7 +34,11 @@ class BookService(@Autowired private val bookRepository: BookRepository) {
         if (findByISBN(bookDTO.ISBN) != null) {
             throw ServiceResponseException("Book ISBN already exits", HttpStatus.INTERNAL_SERVER_ERROR)
         }
-        return bookRepository.save(bookDTO.toEntity()).toDTO()
+        val authors = bookDTO.authors.map { author ->
+            authorRepository.findByName(author.name) ?: author.toEntity()
+        }
+        val bookEntity = bookDTO.toEntity().copy(authors = authors.toSet())
+        return bookRepository.save(bookEntity).toDTO()
     }
 
     fun removeBook(id: Long) {

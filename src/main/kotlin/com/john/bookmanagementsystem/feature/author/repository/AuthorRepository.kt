@@ -5,4 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface AuthorRepository : JpaRepository<Author, Long> {
     fun findByNameContainingIgnoreCase(nameLike: String): List<Author>
+
+    fun findByName(name: String): Author?
+
+    fun existsByName(name: String): Boolean
 }
