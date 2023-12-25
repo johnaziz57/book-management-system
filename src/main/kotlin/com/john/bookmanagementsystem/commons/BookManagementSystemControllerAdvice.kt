@@ -24,10 +24,12 @@ class BookManagementSystemControllerAdvice {
 
     @ExceptionHandler(UnsupportedOperationException::class)
     fun handleUnsupportedOperationException(exception: UnsupportedOperationException): ResponseEntity<ErrorServiceResponse> {
+        // TODO add a condition for when in PROD don't return the exception message
+        throw exception
         return ResponseEntity
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body(
-                ErrorServiceResponse(message = "Internal server error")
+                ErrorServiceResponse(exception.message ?: exception.localizedMessage)
             )
     }
 }
