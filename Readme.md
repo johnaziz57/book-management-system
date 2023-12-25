@@ -10,6 +10,7 @@ This is servlet application
 6. Error resistance
 7. Pagination
 8. Maybe change to webflux
+9. Write Tests
 
 # DONE
 
