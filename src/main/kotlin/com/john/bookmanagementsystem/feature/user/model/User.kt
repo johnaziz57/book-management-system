@@ -5,11 +5,11 @@ import jakarta.persistence.*
 @Entity
 @Table(name = "person")
 data class User(
-    @Id @GeneratedValue val id: Long = -1,
+    @Id @GeneratedValue val id: Long? = null,
     val role: Role = Role.USER,
     val name: String,
     @Column(unique = true)
     val userName: String,
     val password: String,
-    var borrowedBooksCount: Int = 0
+    val borrowedBooksCount: Int = 0
 )

@@ -82,7 +82,7 @@ class BookIntegrationTest(
         assert(bookRepository.count() == 1L)
         assert(authorRepository.count() == 1L)
         val book = bookRepository.findAll().first()
-        bookRepository.deleteById(book.id)
+        bookRepository.deleteById(book.id!!)
         assert(authorRepository.count() == 1L)
         assert(bookRepository.count() == 0L)
     }

@@ -8,7 +8,7 @@ import org.hibernate.validator.constraints.ISBN
 @Entity
 @Table(name = "book")
 data class Book(
-    @Id @GeneratedValue val id: Long = -1,
+    @Id @GeneratedValue val id: Long? = null,
     val title: String = "",
     @field:ISBN // this a different validation on the persistence level
     @Column(unique = true)
@@ -22,7 +22,7 @@ data class Book(
     var authors: Set<Author> = mutableSetOf(),
 
     // TODO check if later I can change default value to 0
-    var availableCopies: Int = 1
+    val availableCopies: Int = 1
 ) {
     fun toDTO(): BookDTO {
         // TODO check what will happen if authors have books, would this conversion keep
