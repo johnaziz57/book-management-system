@@ -5,7 +5,7 @@ import com.john.bookmanagementsystem.feature.book.model.Book
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "Author")
+@Table(name = "author")
 data class Author(
     @Id @GeneratedValue val id: Long = -1,
     val name: String = "",

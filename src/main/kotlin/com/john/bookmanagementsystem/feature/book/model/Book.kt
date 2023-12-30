@@ -14,7 +14,7 @@ data class Book(
     @Column(unique = true)
     val ISBN: String = "",
 
-    @ManyToMany(cascade = [CascadeType.ALL])
+    @ManyToMany(cascade = [CascadeType.MERGE])
     @JoinTable(
         name = "book_author",
         joinColumns = [JoinColumn(name = "book_id")],
