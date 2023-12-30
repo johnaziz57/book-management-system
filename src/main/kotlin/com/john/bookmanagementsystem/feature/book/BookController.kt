@@ -30,4 +30,13 @@ class BookController(@Autowired private val bookService: BookService) {
     fun findBookByTitle(@RequestParam title: String): ResponseEntity<List<BookDTO>> {
         return ResponseEntity.ok(bookService.findByTitle(title))
     }
+
+    @PostMapping("/borrow")
+    fun borrowBook(@RequestParam bookId: String): ResponseEntity<Unit> {
+        return if (bookService.borrowBook(bookId = bookId.toLong())) {
+            ResponseEntity.ok(Unit)
+        } else {
+            ResponseEntity.badRequest().body(Unit)
+        }
+    }
 }

@@ -6,14 +6,13 @@ import jakarta.persistence.*
 import org.hibernate.validator.constraints.ISBN
 
 @Entity
-@Table(name = "Book")
+@Table(name = "book")
 data class Book(
     @Id @GeneratedValue val id: Long = -1,
     val title: String = "",
     @field:ISBN // this a different validation on the persistence level
     @Column(unique = true)
     val ISBN: String = "",
-
     @ManyToMany(cascade = [CascadeType.MERGE])
     @JoinTable(
         name = "book_author",
@@ -21,6 +20,9 @@ data class Book(
         inverseJoinColumns = [JoinColumn(name = "author_id")]
     )
     var authors: Set<Author> = mutableSetOf(),
+
+    // TODO check if later I can change default value to 0
+    val availableCopies: Int = 1
 ) {
     fun toDTO(): BookDTO {
         // TODO check what will happen if authors have books, would this conversion keep

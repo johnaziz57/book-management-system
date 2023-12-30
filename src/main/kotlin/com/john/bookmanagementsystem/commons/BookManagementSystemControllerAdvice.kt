@@ -1,6 +1,7 @@
 package com.john.bookmanagementsystem.commons
 
 import com.john.bookmanagementsystem.commons.dto.ErrorServiceResponse
+import org.hibernate.PersistentObjectException
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
 import org.springframework.http.HttpStatus
@@ -25,7 +26,16 @@ class BookManagementSystemControllerAdvice {
     @ExceptionHandler(UnsupportedOperationException::class)
     fun handleUnsupportedOperationException(exception: UnsupportedOperationException): ResponseEntity<ErrorServiceResponse> {
         // TODO add a condition for when in PROD don't return the exception message
-        throw exception
+        return ResponseEntity
+            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(
+                ErrorServiceResponse(exception.message ?: exception.localizedMessage)
+            )
+    }
+
+    @ExceptionHandler(PersistentObjectException::class)
+    fun handleUnsupportedOperationException(exception: PersistentObjectException): ResponseEntity<ErrorServiceResponse> {
+        // TODO add a condition for when in PROD don't return the exception message
         return ResponseEntity
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body(
