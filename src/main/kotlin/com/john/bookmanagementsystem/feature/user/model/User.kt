@@ -11,5 +11,5 @@ data class User(
     @Column(unique = true)
     val userName: String,
     val password: String,
-    val borrowedBooksCount: Int = 0
+    var borrowedBooksCount: Int = 0
 )

@@ -22,7 +22,7 @@ data class Book(
     var authors: Set<Author> = mutableSetOf(),
 
     // TODO check if later I can change default value to 0
-    val availableCopies: Int = 1
+    var availableCopies: Int = 1
 ) {
     fun toDTO(): BookDTO {
         // TODO check what will happen if authors have books, would this conversion keep

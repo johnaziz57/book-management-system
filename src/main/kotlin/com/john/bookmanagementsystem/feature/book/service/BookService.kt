@@ -55,9 +55,11 @@ class BookService(
             ?: throw ServiceResponseException("user is not found", HttpStatus.UNAUTHORIZED)
         if (book.availableCopies < 1) return false
         if (user.borrowedBooksCount >= MAXIMUM_ALLOWED_BORROWED_BOOKS) return false
+        user.borrowedBooksCount++
+        book.availableCopies--
         borrowLogRepository.save(BorrowLog(user = user, book = book))
-        userRepository.save(user.copy(borrowedBooksCount = user.borrowedBooksCount + 1))
-        bookRepository.save(book.copy(availableCopies = book.availableCopies - 1))
+        userRepository.save(user)
+        bookRepository.save(book)
         return true
     }
 
