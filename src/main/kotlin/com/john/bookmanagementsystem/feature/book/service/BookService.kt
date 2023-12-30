@@ -50,15 +50,33 @@ class BookService(
     @Transactional
     fun borrowBook(bookId: Long): Boolean {
         val book = bookRepository.findById(bookId)
-            .orElseThrow { throw ServiceResponseException("Book ISBN already exits", HttpStatus.BAD_REQUEST) }
+            .orElseThrow { throw ServiceResponseException("Book doesn't exist", HttpStatus.BAD_REQUEST) }
         val user = SecurityContextHolder.getContext().authentication.name.let { userRepository.findByUserName(it) }
             ?: throw ServiceResponseException("user is not found", HttpStatus.UNAUTHORIZED)
+
         if (book.availableCopies < 1) return false
         if (user.borrowedBooksCount >= MAXIMUM_ALLOWED_BORROWED_BOOKS) return false
-        user.copy(borrowedBooksCount = user.borrowedBooksCount + 1)
+
         borrowLogRepository.save(BorrowLog(user = user, book = book))
         userRepository.save(user.copy(borrowedBooksCount = user.borrowedBooksCount + 1))
         bookRepository.save(book.copy(availableCopies = book.availableCopies - 1))
+        return true
+    }
+
+    @Transactional
+    fun returnBook(bookId: Long): Boolean {
+        val book = bookRepository.findById(bookId)
+            .orElseThrow { throw ServiceResponseException("Book doesn't exit", HttpStatus.BAD_REQUEST) }
+        val user = SecurityContextHolder.getContext().authentication.name.let { userRepository.findByUserName(it) }
+            ?: throw ServiceResponseException("user is not found", HttpStatus.UNAUTHORIZED)
+        val borrowLog = borrowLogRepository.findByBookId(bookId) ?: throw ServiceResponseException(
+            "Not related book was borrowed",
+            HttpStatus.UNAUTHORIZED
+        )
+
+        borrowLogRepository.delete(borrowLog)
+        userRepository.save(user.copy(borrowedBooksCount = user.borrowedBooksCount - 1))
+        bookRepository.save(book.copy(availableCopies = book.availableCopies + 1))
         return true
     }
 

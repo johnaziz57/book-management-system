@@ -1,14 +1,11 @@
 This is servlet application
 
 # TODO
-
-1. Users can borrow/return books
-2. Users must borrow only 1 book. They have to return the book before borrowing a new one
-3. Finish create controller, with duplicate/ without author/ with author
-4. Make it restful
-5. Error resistance
-6. Pagination
-7. Maybe change to webflux
+1. Finish create controller, with duplicate/ without author/ with author
+2. Make it restful
+3. Error resistance
+4. Pagination
+5. Maybe change to webflux
 
 # Doing
 
@@ -23,6 +20,8 @@ This is servlet application
 5. Only Admin can create books and authors
 6. Role base access
 7. Mark creation of books as transactional
+8. Users can borrow/return books
+9. Users must borrow only 1 book. They have to return the book before borrowing a new one
 
 # Questions
 
