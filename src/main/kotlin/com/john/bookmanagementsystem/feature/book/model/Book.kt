@@ -8,12 +8,14 @@ import org.hibernate.validator.constraints.ISBN
 @Entity
 @Table(name = "book")
 data class Book(
-    @Id @GeneratedValue val id: Long? = null,
+    @Id
+    @GeneratedValue
+    val id: Long? = null,
     val title: String = "",
     @field:ISBN // this a different validation on the persistence level
     @Column(unique = true)
     val ISBN: String = "",
-    @ManyToMany(cascade = [CascadeType.MERGE])
+    @ManyToMany(cascade = [CascadeType.MERGE, CascadeType.PERSIST])
     @JoinTable(
         name = "book_author",
         joinColumns = [JoinColumn(name = "book_id")],
