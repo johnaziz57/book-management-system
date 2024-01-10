@@ -1,11 +1,9 @@
 This is servlet application
 
 # TODO
-1. Finish create controller, with duplicate/ without author/ with author
-2. Make it restful
-3. Error resistance
-4. Pagination
-5. Maybe change to webflux
+1. Make it restful
+2. Error resistance
+3. Maybe change to webflux
 
 # Doing
 
@@ -13,15 +11,17 @@ This is servlet application
 
 # DONE
 
-1. Mark ISBN as unique
-2. Prevent creation of books that overrides a previous book. Maybe introduce different endpoints
-3. Investigate why searching by name is not working
-4. Spring Authentication
-5. Only Admin can create books and authors
-6. Role base access
-7. Mark creation of books as transactional
-8. Users can borrow/return books
-9. Users must borrow only 1 book. They have to return the book before borrowing a new one
+1. Finish create controller, with duplicate/ without author/ with author
+2. Mark ISBN as unique
+3. Prevent creation of books that overrides a previous book. Maybe introduce different endpoints
+4. Investigate why searching by name is not working
+5. Spring Authentication
+6. Only Admin can create books and authors
+7. Role base access
+8. Mark creation of books as transactional
+9. Users can borrow/return books
+10. Users must borrow only 1 book. They have to return the book before borrowing a new one
+11. Pagination
 
 # Questions
 
