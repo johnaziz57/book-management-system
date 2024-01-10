@@ -10,6 +10,7 @@ import com.john.bookmanagementsystem.feature.book.repository.BorrowLogRepository
 import com.john.bookmanagementsystem.feature.user.repository.UserRepository
 import jakarta.transaction.Transactional
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
@@ -21,8 +22,9 @@ class BookService(
     @Autowired private val borrowLogRepository: BorrowLogRepository,
     @Autowired private val userRepository: UserRepository,
 ) {
-    fun findAll(): List<BookDTO> {
-        return bookRepository.findAll().map { it.toDTO() }
+
+    fun findAll(pageRequest: PageRequest): List<BookDTO> {
+        return bookRepository.findAll(pageRequest).content.map { it.toDTO() }
     }
 
     fun findById(id: Long): Book {

@@ -3,6 +3,7 @@ package com.john.bookmanagementsystem.feature.book
 import com.john.bookmanagementsystem.feature.book.dto.BookDTO
 import com.john.bookmanagementsystem.feature.book.service.BookService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.PageRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
@@ -14,8 +15,8 @@ import javax.validation.Valid
 class BookController(@Autowired private val bookService: BookService) {
 
     @GetMapping("/all")
-    fun findAll(): ResponseEntity<List<BookDTO>> {
-        return ResponseEntity.ok(bookService.findAll())
+    fun findAll(@RequestParam(required = false) page: Int?): ResponseEntity<List<BookDTO>> {
+        return ResponseEntity.ok(bookService.findAll(PageRequest.of(page ?: 0, 5)))
     }
 
     // TODO add @Transactional
