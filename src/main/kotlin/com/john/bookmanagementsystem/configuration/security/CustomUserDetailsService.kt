@@ -20,7 +20,7 @@ class CustomUserDetailsService(@Autowired private val userRepository: UserReposi
                 .roles(user.role.name)
                 .authorities(SimpleGrantedAuthority("ROLE_${user.role.name}"))
                 .build()
-            // TODO @Giona, why not use UserNameNotFoundException directly instead of ServiceResponseException
+            // TODO @Giona, which to return UserNameNotFoundException or ServiceResponseException
         } ?: throw UsernameNotFoundException("user not found")
     }
 }

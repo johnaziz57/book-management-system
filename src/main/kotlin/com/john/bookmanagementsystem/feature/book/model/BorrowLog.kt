@@ -3,6 +3,7 @@ package com.john.bookmanagementsystem.feature.book.model
 import com.john.bookmanagementsystem.feature.user.model.User
 import jakarta.persistence.*
 
+//TODO create a service method that will return who borrowed the books
 @Entity
 @Table(name = "borrow_log")
 data class BorrowLog(
