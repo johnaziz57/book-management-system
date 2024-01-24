@@ -1,6 +1,5 @@
 package com.john.bookmanagementsystem.configuration.security
 
-import com.john.bookmanagementsystem.feature.user.model.Role
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -38,7 +37,6 @@ class SecurityConfig constructor(
             .authorizeHttpRequests {
                 it.requestMatchers(HttpMethod.POST, "auth/**").permitAll()
                 it.requestMatchers(HttpMethod.GET, "**").permitAll()
-                it.requestMatchers(HttpMethod.POST, "author/create").hasRole(Role.ADMIN.name)
                 it.requestMatchers(HttpMethod.POST, "book/**").authenticated()
             }
             .httpBasic(Customizer.withDefaults())
