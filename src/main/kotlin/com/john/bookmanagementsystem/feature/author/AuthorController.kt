@@ -1,10 +1,10 @@
 package com.john.bookmanagementsystem.feature.author
 
+import com.john.bookmanagementsystem.configuration.security.annotation.AdminAuthorization
 import com.john.bookmanagementsystem.feature.author.dto.AuthorDTO
 import com.john.bookmanagementsystem.feature.author.service.AuthorService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
@@ -24,7 +24,7 @@ class AuthorController(@Autowired private val authorService: AuthorService) {
     }
 
     @PostMapping("/create")
-    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
+    @AdminAuthorization
     fun createAuthor(@RequestBody @Valid authorDTO: AuthorDTO): ResponseEntity<AuthorDTO> {
         return ResponseEntity.ok(authorService.createAuthor(authorDTO))
     }
