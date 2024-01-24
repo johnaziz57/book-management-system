@@ -38,7 +38,6 @@ class SecurityConfig constructor(
             .authorizeHttpRequests {
                 it.requestMatchers(HttpMethod.POST, "auth/**").permitAll()
                 it.requestMatchers(HttpMethod.GET, "**").permitAll()
-                it.requestMatchers(HttpMethod.POST, "book/create").hasRole(Role.ADMIN.name)
                 it.requestMatchers(HttpMethod.POST, "author/create").hasRole(Role.ADMIN.name)
                 it.requestMatchers(HttpMethod.POST, "book/**").authenticated()
             }
