@@ -24,6 +24,7 @@ data class Book(
     var authors: Set<Author> = mutableSetOf(),
 
     // TODO check if later I can change default value to 0
+    // Good normalization
     val availableCopies: Int = 1
 ) {
     fun toDTO(): BookDTO {
