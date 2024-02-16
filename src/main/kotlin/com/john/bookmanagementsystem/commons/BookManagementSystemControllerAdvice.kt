@@ -42,4 +42,14 @@ class BookManagementSystemControllerAdvice {
                 ErrorServiceResponse(exception.message ?: exception.localizedMessage)
             )
     }
+
+    @ExceptionHandler(Exception::class)
+    fun handleGenericException(exception: Exception): ResponseEntity<ErrorServiceResponse> {
+        // TODO add a condition for when in PROD don't return the exception message
+        return ResponseEntity
+            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(
+                ErrorServiceResponse(exception.message ?: exception.localizedMessage)
+            )
+    }
 }

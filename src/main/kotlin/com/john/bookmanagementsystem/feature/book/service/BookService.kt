@@ -50,10 +50,10 @@ class BookService(
     }
 
     @Transactional
-    fun borrowBook(bookId: Long): Boolean {
+    fun borrowBook(bookId: Long, username: String): Boolean {
         val book = bookRepository.findById(bookId)
             .orElseThrow { throw ServiceResponseException("Book doesn't exist", HttpStatus.BAD_REQUEST) }
-        val user = SecurityContextHolder.getContext().authentication.name.let { userRepository.findByUserName(it) }
+        val user = userRepository.findByUserName(username)
             ?: throw ServiceResponseException("user is not found", HttpStatus.UNAUTHORIZED)
 
         if (book.availableCopies < 1) return false
