@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 
 @Service
 class BookService(
@@ -58,7 +59,14 @@ class BookService(
         if (book.availableCopies < 1) return false
         if (user.borrowedBooksCount >= MAXIMUM_ALLOWED_BORROWED_BOOKS) return false
 
-        borrowLogRepository.save(BorrowLog(user = user, book = book))
+        borrowLogRepository.save(
+            BorrowLog(
+                user = user,
+                book = book,
+                borrowedDate = LocalDateTime.now(),
+                returnedDate = null
+            )
+        )
         userRepository.save(user.copy(borrowedBooksCount = user.borrowedBooksCount + 1))
         bookRepository.save(book.copy(availableCopies = book.availableCopies - 1))
         return true
@@ -75,7 +83,7 @@ class BookService(
             HttpStatus.UNAUTHORIZED
         )
 
-        borrowLogRepository.delete(borrowLog)
+        borrowLogRepository.save(borrowLog.copy(returnedDate = LocalDateTime.now()))
         userRepository.save(user.copy(borrowedBooksCount = user.borrowedBooksCount - 1))
         bookRepository.save(book.copy(availableCopies = book.availableCopies + 1))
         return true
