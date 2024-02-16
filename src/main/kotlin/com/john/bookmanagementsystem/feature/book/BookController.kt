@@ -4,10 +4,10 @@ import com.john.bookmanagementsystem.configuration.security.UserAuthorization
 import com.john.bookmanagementsystem.configuration.security.annotation.AdminAuthorization
 import com.john.bookmanagementsystem.feature.book.dto.BookDTO
 import com.john.bookmanagementsystem.feature.book.service.BookService
-import jakarta.servlet.http.HttpServletRequest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.ResponseEntity
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
@@ -38,8 +38,8 @@ class BookController(@Autowired private val bookService: BookService) {
 
     @PostMapping("/borrow")
     @UserAuthorization
-    fun borrowBook(@RequestParam bookId: String, request: HttpServletRequest): ResponseEntity<Unit> {
-        return if (bookService.borrowBook(bookId = bookId.toLong(), request.userPrincipal.name)) {
+    fun borrowBook(@RequestParam bookId: String, userToken: UsernamePasswordAuthenticationToken): ResponseEntity<Unit> {
+        return if (bookService.borrowBook(bookId = bookId.toLong(), userToken.name)) {
             ResponseEntity.ok(Unit)
         } else {
             ResponseEntity.badRequest().body(Unit)
