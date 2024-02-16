@@ -12,7 +12,6 @@ import jakarta.transaction.Transactional
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 
 @Service
@@ -66,10 +65,10 @@ class BookService(
     }
 
     @Transactional
-    fun returnBook(bookId: Long): Boolean {
+    fun returnBook(bookId: Long, username: String): Boolean {
         val book = bookRepository.findById(bookId)
             .orElseThrow { throw ServiceResponseException("Book doesn't exit", HttpStatus.BAD_REQUEST) }
-        val user = SecurityContextHolder.getContext().authentication.name.let { userRepository.findByUserName(it) }
+        val user = userRepository.findByUserName(username)
             ?: throw ServiceResponseException("user is not found", HttpStatus.UNAUTHORIZED)
         val borrowLog = borrowLogRepository.findByBookId(bookId) ?: throw ServiceResponseException(
             "Not related book was borrowed",

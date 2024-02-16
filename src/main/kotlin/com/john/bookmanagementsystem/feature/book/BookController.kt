@@ -48,8 +48,8 @@ class BookController(@Autowired private val bookService: BookService) {
 
     @PostMapping("/return")
     @UserAuthorization
-    fun returnBook(@RequestParam bookId: String): ResponseEntity<Unit> {
-        return if (bookService.returnBook(bookId = bookId.toLong())) {
+    fun returnBook(@RequestParam bookId: String, userToken: UsernamePasswordAuthenticationToken): ResponseEntity<Unit> {
+        return if (bookService.returnBook(bookId = bookId.toLong(), userToken.name)) {
             ResponseEntity.ok(Unit)
         } else {
             ResponseEntity.badRequest().body(Unit)
