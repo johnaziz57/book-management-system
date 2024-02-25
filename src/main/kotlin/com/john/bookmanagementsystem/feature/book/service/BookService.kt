@@ -112,6 +112,12 @@ class BookService(
         return bookRepository.findByTitleContainingIgnoreCase(title).map { it.toDTO() }
     }
 
+    /**
+     * returns the most borrowed books by rank
+     *
+     * P.S. This function can be optimized if we kept track of how many times each book was borrowed
+     * instead of counting
+     */
     fun getMostBorrowed(rankLimit: Int): List<BookDTO> {
         return borrowLogRepository.findMostBorrowed(rankLimit)
             .let { bookRepository.findAllById(it) }
