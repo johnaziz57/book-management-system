@@ -78,7 +78,10 @@ class BookService(
             .orElseThrow { throw ServiceResponseException("Book doesn't exit", HttpStatus.BAD_REQUEST) }
         val user = userRepository.findByUserName(username)
             ?: throw ServiceResponseException("user is not found", HttpStatus.UNAUTHORIZED)
-        val borrowLog = borrowLogRepository.findByBookId(bookId) ?: throw ServiceResponseException(
+
+        user.id ?: throw ServiceResponseException("user is not saved", HttpStatus.UNAUTHORIZED)
+
+        val borrowLog = borrowLogRepository.findFirstUnreturnedBook(bookId, user.id) ?: throw ServiceResponseException(
             "Not related book was borrowed",
             HttpStatus.UNAUTHORIZED
         )
@@ -109,7 +112,13 @@ class BookService(
         return bookRepository.findByTitleContainingIgnoreCase(title).map { it.toDTO() }
     }
 
-    fun findByISBN(isbn: String): Book? {
+    fun getMostBorrowed(rankLimit: Int): List<BookDTO> {
+        return borrowLogRepository.findMostBorrowed(rankLimit)
+            .let { bookRepository.findAllById(it) }
+            .map { it.toDTO() }
+    }
+
+    private fun findByISBN(isbn: String): Book? {
         return bookRepository.findByISBN(isbn)
     }
 

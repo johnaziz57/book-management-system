@@ -31,7 +31,7 @@ class BookController(@Autowired private val bookService: BookService) {
         return ResponseEntity.ok(bookService.createBook(bookDTO))
     }
 
-    @GetMapping("findByTitle")
+    @GetMapping("find-by-title")
     fun findBookByTitle(@RequestParam title: String): ResponseEntity<List<BookDTO>> {
         return ResponseEntity.ok(bookService.findByTitle(title))
     }
@@ -54,5 +54,15 @@ class BookController(@Autowired private val bookService: BookService) {
         } else {
             ResponseEntity.badRequest().body(Unit)
         }
+    }
+
+    @GetMapping("/most-borrowed")
+    fun getMostBorrowed(
+        @RequestParam(
+            required = false,
+            defaultValue = "1"
+        ) rankLimit: Int
+    ): ResponseEntity<List<BookDTO>> {
+        return ResponseEntity.ok(bookService.getMostBorrowed(rankLimit))
     }
 }

@@ -9,10 +9,10 @@ import java.time.LocalDateTime
 @Table(name = "borrow_log")
 data class BorrowLog(
     @Id @GeneratedValue val id: Long? = null,
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     val user: User,
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "book_id")
     val book: Book,
     val borrowedDate: LocalDateTime,
