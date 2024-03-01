@@ -4,6 +4,11 @@ This is servlet application
 1. Make it restful
 2. Error resistance
 3. Maybe change to webflux
+4. Task: Write a complex SQL query to generate a report, such as a list of the most popular books by genre. Include
+   database indexing to optimize the query
+   1. Most borrowed book
+   2. Average time of borrow
+   3. Book not returned
 
 # Doing
 
@@ -22,6 +27,8 @@ This is servlet application
 9. Users can borrow/return books
 10. Users must borrow only 1 book. They have to return the book before borrowing a new one
 11. Pagination
+12. User -> Book relationship
+13.
 
 # Questions
 

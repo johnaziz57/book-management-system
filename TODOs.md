@@ -7,7 +7,7 @@ User must have some kind of link to the book they borrowed. When they borrowed a
 - Authentication is fine but Authorization is lacking or more control
 - We need more test and understand what to test
 ## To add
-- User -> Book relationship
+
 - Complex queries like statistics: (No more JPA)
   -  Task: Write a complex SQL query to generate a report, such as a list of the most popular books by genre. Include database indexing to optimize the query
         - Most borrowed book
