@@ -40,4 +40,15 @@ interface BorrowLogRepository : JpaRepository<BorrowLog, Long> {
         """
     )
     fun findMostBorrowed(@Param(value = "rank_limit") rankLimit: Int): List<Long>
+
+    @Query(
+        nativeQuery = true, value = """
+            SELECT 
+                borrow_log.book_id
+            FROM borrow_log
+            WHERE
+                returned_date IS NULL
+        """
+    )
+    fun findNotReturned(): List<Long>
 }

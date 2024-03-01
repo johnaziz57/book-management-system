@@ -54,10 +54,16 @@ class BookService(
         val book = bookRepository.findById(bookId)
             .orElseThrow { throw ServiceResponseException("Book doesn't exist", HttpStatus.BAD_REQUEST) }
         val user = userRepository.findByUserName(username)
-            ?: throw ServiceResponseException("user is not found", HttpStatus.UNAUTHORIZED)
+            ?: throw ServiceResponseException("User is not found", HttpStatus.UNAUTHORIZED)
 
-        if (book.availableCopies < 1) return false
-        if (user.borrowedBooksCount >= MAXIMUM_ALLOWED_BORROWED_BOOKS) return false
+        if (book.availableCopies < 1) throw ServiceResponseException(
+            "No copies available to borrow",
+            HttpStatus.FORBIDDEN
+        )
+        if (user.borrowedBooksCount >= MAXIMUM_ALLOWED_BORROWED_BOOKS) throw ServiceResponseException(
+            "User reached maximum amount of books to borrow",
+            HttpStatus.FORBIDDEN
+        )
 
         borrowLogRepository.save(
             BorrowLog(
@@ -120,6 +126,12 @@ class BookService(
      */
     fun getMostBorrowed(rankLimit: Int): List<BookDTO> {
         return borrowLogRepository.findMostBorrowed(rankLimit)
+            .let { bookRepository.findAllById(it) }
+            .map { it.toDTO() }
+    }
+
+    fun getNotReturned(): List<BookDTO> {
+        return borrowLogRepository.findNotReturned()
             .let { bookRepository.findAllById(it) }
             .map { it.toDTO() }
     }
