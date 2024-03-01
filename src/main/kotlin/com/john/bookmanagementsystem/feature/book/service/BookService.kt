@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 
 @Service
 class BookService(
@@ -58,7 +59,14 @@ class BookService(
         if (book.availableCopies < 1) return false
         if (user.borrowedBooksCount >= MAXIMUM_ALLOWED_BORROWED_BOOKS) return false
 
-        borrowLogRepository.save(BorrowLog(user = user, book = book))
+        borrowLogRepository.save(
+            BorrowLog(
+                user = user,
+                book = book,
+                borrowedDate = LocalDateTime.now(),
+                returnedDate = null
+            )
+        )
         userRepository.save(user.copy(borrowedBooksCount = user.borrowedBooksCount + 1))
         bookRepository.save(book.copy(availableCopies = book.availableCopies - 1))
         return true
@@ -70,12 +78,15 @@ class BookService(
             .orElseThrow { throw ServiceResponseException("Book doesn't exit", HttpStatus.BAD_REQUEST) }
         val user = userRepository.findByUserName(username)
             ?: throw ServiceResponseException("user is not found", HttpStatus.UNAUTHORIZED)
-        val borrowLog = borrowLogRepository.findByBookId(bookId) ?: throw ServiceResponseException(
+
+        user.id ?: throw ServiceResponseException("user is not saved", HttpStatus.UNAUTHORIZED)
+
+        val borrowLog = borrowLogRepository.findFirstUnreturnedBook(bookId, user.id) ?: throw ServiceResponseException(
             "Not related book was borrowed",
             HttpStatus.UNAUTHORIZED
         )
 
-        borrowLogRepository.delete(borrowLog)
+        borrowLogRepository.save(borrowLog.copy(returnedDate = LocalDateTime.now()))
         userRepository.save(user.copy(borrowedBooksCount = user.borrowedBooksCount - 1))
         bookRepository.save(book.copy(availableCopies = book.availableCopies + 1))
         return true
@@ -101,7 +112,19 @@ class BookService(
         return bookRepository.findByTitleContainingIgnoreCase(title).map { it.toDTO() }
     }
 
-    fun findByISBN(isbn: String): Book? {
+    /**
+     * returns the most borrowed books by rank
+     *
+     * P.S. This function can be optimized if we kept track of how many times each book was borrowed
+     * instead of counting
+     */
+    fun getMostBorrowed(rankLimit: Int): List<BookDTO> {
+        return borrowLogRepository.findMostBorrowed(rankLimit)
+            .let { bookRepository.findAllById(it) }
+            .map { it.toDTO() }
+    }
+
+    private fun findByISBN(isbn: String): Book? {
         return bookRepository.findByISBN(isbn)
     }
 
