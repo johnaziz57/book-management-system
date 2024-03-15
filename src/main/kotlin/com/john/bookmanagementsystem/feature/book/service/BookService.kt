@@ -4,8 +4,10 @@ import com.john.bookmanagementsystem.commons.ServiceResponseException
 import com.john.bookmanagementsystem.feature.author.repository.AuthorRepository
 import com.john.bookmanagementsystem.feature.book.dto.BookDTO
 import com.john.bookmanagementsystem.feature.book.model.Book
+import com.john.bookmanagementsystem.feature.book.model.BookStatistics
 import com.john.bookmanagementsystem.feature.book.model.BorrowLog
 import com.john.bookmanagementsystem.feature.book.repository.BookRepository
+import com.john.bookmanagementsystem.feature.book.repository.BookStatisticsRepository
 import com.john.bookmanagementsystem.feature.book.repository.BorrowLogRepository
 import com.john.bookmanagementsystem.feature.user.repository.UserRepository
 import jakarta.transaction.Transactional
@@ -20,6 +22,7 @@ class BookService(
     @Autowired private val bookRepository: BookRepository,
     @Autowired private val authorRepository: AuthorRepository,
     @Autowired private val borrowLogRepository: BorrowLogRepository,
+    @Autowired private val bookStatisticsRepository: BookStatisticsRepository,
     @Autowired private val userRepository: UserRepository,
 ) {
 
@@ -46,7 +49,16 @@ class BookService(
             authorRepository.findByName(author.name) ?: author.toEntity()
         }
         val bookEntity = bookDTO.toEntity().copy(authors = authors.toSet())
-        return bookRepository.save(bookEntity).toDTO()
+        return bookRepository.save(bookEntity).let {
+
+            bookStatisticsRepository.save(
+                BookStatistics(
+                    book = bookEntity
+                )
+            )
+
+            it.toDTO()
+        }
     }
 
     @Transactional
@@ -65,6 +77,8 @@ class BookService(
             HttpStatus.FORBIDDEN
         )
 
+        val statistics = findBookStatistics(book)
+
         borrowLogRepository.save(
             BorrowLog(
                 user = user,
@@ -73,6 +87,7 @@ class BookService(
                 returnedDate = null
             )
         )
+//        bookStatisticsRepository.save(statistics.copy(borrowCount = statistics.borrowCount + 1))
         userRepository.save(user.copy(borrowedBooksCount = user.borrowedBooksCount + 1))
         bookRepository.save(book.copy(availableCopies = book.availableCopies - 1))
         return true
@@ -88,11 +103,20 @@ class BookService(
         user.id ?: throw ServiceResponseException("user is not saved", HttpStatus.UNAUTHORIZED)
 
         val borrowLog = borrowLogRepository.findFirstUnreturnedBook(bookId, user.id) ?: throw ServiceResponseException(
-            "Not related book was borrowed",
+            "No related book was borrowed",
             HttpStatus.UNAUTHORIZED
         )
+        val statistics = findBookStatistics(book)
 
-        borrowLogRepository.save(borrowLog.copy(returnedDate = LocalDateTime.now()))
+        val returnedDate = LocalDateTime.now()
+//        val previousBorrowCount = statistics.borrowCount - 1
+//        val averageBorrowTime = (
+//                (statistics.averageBorrowTime * previousBorrowCount) +
+//                        Duration.between(borrowLog.borrowedDate, returnedDate).seconds
+//                ) / statistics.borrowCount
+
+//        bookStatisticsRepository.save(statistics.copy(averageBorrowTime = averageBorrowTime.toInt()))
+        borrowLogRepository.save(borrowLog.copy(returnedDate = returnedDate))
         userRepository.save(user.copy(borrowedBooksCount = user.borrowedBooksCount - 1))
         bookRepository.save(book.copy(availableCopies = book.availableCopies + 1))
         return true
@@ -138,6 +162,15 @@ class BookService(
 
     private fun findByISBN(isbn: String): Book? {
         return bookRepository.findByISBN(isbn)
+    }
+
+    private fun findBookStatistics(book: Book): BookStatistics {
+        return bookStatisticsRepository.findByBook(book)
+            ?: bookStatisticsRepository.saveAndFlush(
+                BookStatistics(
+                    book = book
+                )
+            )
     }
 
     companion object {

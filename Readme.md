@@ -13,6 +13,7 @@ This is servlet application
    1. Most borrowed book
    2. Average time of borrow
    3. Book not returned
+3. Statistics Table
 
 # DONE
 
