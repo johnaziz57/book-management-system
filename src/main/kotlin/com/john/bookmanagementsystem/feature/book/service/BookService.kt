@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import java.time.Duration
 import java.time.LocalDateTime
 
 @Service
@@ -87,7 +88,7 @@ class BookService(
                 returnedDate = null
             )
         )
-//        bookStatisticsRepository.save(statistics.copy(borrowCount = statistics.borrowCount + 1))
+        bookStatisticsRepository.save(statistics.copy(borrowCount = statistics.borrowCount + 1))
         userRepository.save(user.copy(borrowedBooksCount = user.borrowedBooksCount + 1))
         bookRepository.save(book.copy(availableCopies = book.availableCopies - 1))
         return true
@@ -109,13 +110,13 @@ class BookService(
         val statistics = findBookStatistics(book)
 
         val returnedDate = LocalDateTime.now()
-//        val previousBorrowCount = statistics.borrowCount - 1
-//        val averageBorrowTime = (
-//                (statistics.averageBorrowTime * previousBorrowCount) +
-//                        Duration.between(borrowLog.borrowedDate, returnedDate).seconds
-//                ) / statistics.borrowCount
+        val previousBorrowCount = statistics.borrowCount - 1
+        val averageBorrowTime = (
+                (statistics.averageBorrowTime * previousBorrowCount) +
+                        Duration.between(borrowLog.borrowedDate, returnedDate).seconds
+                ) / statistics.borrowCount
 
-//        bookStatisticsRepository.save(statistics.copy(averageBorrowTime = averageBorrowTime.toInt()))
+        bookStatisticsRepository.save(statistics.copy(averageBorrowTime = averageBorrowTime.toInt()))
         borrowLogRepository.save(borrowLog.copy(returnedDate = returnedDate))
         userRepository.save(user.copy(borrowedBooksCount = user.borrowedBooksCount - 1))
         bookRepository.save(book.copy(availableCopies = book.availableCopies + 1))
@@ -149,9 +150,8 @@ class BookService(
      * instead of counting
      */
     fun getMostBorrowed(rankLimit: Int): List<BookDTO> {
-        return borrowLogRepository.findMostBorrowed(rankLimit)
-            .let { bookRepository.findAllById(it) }
-            .map { it.toDTO() }
+        return bookStatisticsRepository.findMostBorrowed(rankLimit)
+            .map { it.book.toDTO() }
     }
 
     fun getNotReturned(): List<BookDTO> {
