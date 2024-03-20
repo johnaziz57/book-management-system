@@ -4,6 +4,8 @@ This is servlet application
 1. Make it restful
 2. Error resistance
 3. Maybe change to webflux
+4. Return values of most borrowed
+5. Return values of longest time for borrowed book
 
 # Doing
 
@@ -13,6 +15,7 @@ This is servlet application
    1. Most borrowed book
    2. Average time of borrow
    3. Book not returned
+3. Statistics Table
 
 # DONE
 

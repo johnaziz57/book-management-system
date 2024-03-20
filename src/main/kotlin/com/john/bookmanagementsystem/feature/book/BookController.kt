@@ -66,6 +66,16 @@ class BookController(@Autowired private val bookService: BookService) {
         return ResponseEntity.ok(bookService.getMostBorrowed(rankLimit))
     }
 
+    @GetMapping("/longest-borrowed")
+    fun getLongestBorrowed(
+        @RequestParam(
+            required = false,
+            defaultValue = "1"
+        ) rankLimit: Int
+    ): ResponseEntity<List<BookDTO>> {
+        return ResponseEntity.ok(bookService.getLongestBorrowed(rankLimit))
+    }
+
     @GetMapping("/not-returned")
     fun getNotReturnedBooks(): ResponseEntity<List<BookDTO>> {
         return ResponseEntity.ok(bookService.getNotReturned())
