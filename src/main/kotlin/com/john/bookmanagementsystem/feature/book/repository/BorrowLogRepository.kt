@@ -32,17 +32,6 @@ interface BorrowLogRepository : JpaRepository<BorrowLog, Long> {
     @Query(
         nativeQuery = true, value = """
             SELECT 
-                count(borrow_log.book_id)
-            FROM borrow_log
-            GROUP BY borrow_log.book_id
-            LIMIT :rank_limit
-        """ // TODO book statistics
-    )
-    fun findMostBorrowed(@Param(value = "rank_limit") rankLimit: Int): List<Long>
-
-    @Query(
-        nativeQuery = true, value = """
-            SELECT 
                 borrow_log.book_id
             FROM borrow_log
             WHERE
