@@ -154,6 +154,11 @@ class BookService(
             .map { it.book.toDTO() }
     }
 
+    fun getLongestBorrowed(rankLimit: Int): List<BookDTO> {
+        return bookStatisticsRepository.findLongestBorrowed(rankLimit)
+            .map { it.book.toDTO() }
+    }
+
     fun getNotReturned(): List<BookDTO> {
         return borrowLogRepository.findNotReturned()
             .let { bookRepository.findAllById(it) }
