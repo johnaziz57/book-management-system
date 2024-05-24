@@ -7,15 +7,10 @@ This is servlet application
 4. Return values of most borrowed
 5. Return values of longest time for borrowed book
 
+
 # Doing
 
-1. Write Tests
-2. Task: Write a complex SQL query to generate a report, such as a list of the most popular books by genre. Include
-   database indexing to optimize the query
-   1. Most borrowed book
-   2. Average time of borrow
-   3. Book not returned
-3. Statistics Table
+
 
 # DONE
 
@@ -31,7 +26,13 @@ This is servlet application
 10. Users must borrow only 1 book. They have to return the book before borrowing a new one
 11. Pagination
 12. User -> Book relationship
-13.
+13. Write Tests
+14. Task: Write a complex SQL query to generate a report, such as a list of the most popular books by genre. Include
+    database indexing to optimize the query
+    1. Most borrowed book
+    2. Average time of borrow
+    3. Book not returned
+15. Statistics Table
 
 # Questions
 
