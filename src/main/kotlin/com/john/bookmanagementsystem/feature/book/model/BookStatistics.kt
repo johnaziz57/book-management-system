@@ -1,6 +1,12 @@
 package com.john.bookmanagementsystem.feature.book.model
 
-import jakarta.persistence.*
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.Id
+import jakarta.persistence.Index
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.OneToOne
+import jakarta.persistence.Table
 
 @Entity
 @Table(
@@ -15,5 +21,5 @@ data class BookStatistics(
     @JoinColumn(name = "isbn", referencedColumnName = "isbn")
     val book: Book,
     val borrowCount: Int = 0,
-    val averageBorrowTime: Int = 0
+    val averageBorrowTime: Int = 0 //In seconds
 )

@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import java.time.Clock
 import java.time.Duration
 import java.time.LocalDateTime
 
@@ -25,6 +26,7 @@ class BookService(
     @Autowired private val borrowLogRepository: BorrowLogRepository,
     @Autowired private val bookStatisticsRepository: BookStatisticsRepository,
     @Autowired private val userRepository: UserRepository,
+    @Autowired private val clock: Clock
 ) {
 
     fun findAll(pageRequest: PageRequest): List<BookDTO> {
@@ -84,7 +86,7 @@ class BookService(
             BorrowLog(
                 user = user,
                 book = book,
-                borrowedDate = LocalDateTime.now(),
+                borrowedDate = LocalDateTime.now(clock),
                 returnedDate = null
             )
         )
@@ -109,7 +111,7 @@ class BookService(
         )
         val statistics = findBookStatistics(book)
 
-        val returnedDate = LocalDateTime.now()
+        val returnedDate = LocalDateTime.now(clock)
         val previousBorrowCount = statistics.borrowCount - 1
         val averageBorrowTime = (
                 (statistics.averageBorrowTime * previousBorrowCount) +
