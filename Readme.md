@@ -7,12 +7,8 @@ This is servlet application
 
 # Doing
 
-1. Write Tests
-2. Task: Write a complex SQL query to generate a report, such as a list of the most popular books by genre. Include
-   database indexing to optimize the query
-   1. Most borrowed book
-   2. Average time of borrow
-   3. Book not returned
+- Add database versioning (flyway or liquidbase)
+    - Task: Implement Flyway or Liquibase in the project and create migration scripts to handle schema changes in the database.
 
 # DONE
 
@@ -28,7 +24,14 @@ This is servlet application
 10. Users must borrow only 1 book. They have to return the book before borrowing a new one
 11. Pagination
 12. User -> Book relationship
-13.
+13. Task: Write a complex SQL query to generate a report, such as a list of the most popular books by genre. Include
+    database indexing to optimize the query
+    1. Most borrowed book
+    2. Average time of borrow
+    3. Book not returned
+14. Statistics Table
+15. Add environments variables (Dev, Staging, Production)
+
 
 # Questions
 
