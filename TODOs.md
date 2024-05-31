@@ -13,6 +13,7 @@ User must have some kind of link to the book they borrowed. When they borrowed a
         - Most borrowed book
         - Average time of borrow
         - Book not returned
+  - Add Test with Zonky to test this logic
 
 - Add environments variables (Dev, Staging, Production)
   - Task: Create separate configurations for development, testing, and production environments. This includes setting up different database connections and logging levels for each environment.
