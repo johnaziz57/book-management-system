@@ -13,6 +13,7 @@ User must have some kind of link to the book they borrowed. When they borrowed a
         - Most borrowed book
         - Average time of borrow
         - Book not returned
+  - Add Test with Zonky to test this logic
 
 
 - Add database versioning (flyway or liquidbase)

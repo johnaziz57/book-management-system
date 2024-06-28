@@ -4,9 +4,11 @@ This is servlet application
 1. Make it restful
 2. Error resistance
 3. Maybe change to webflux
+4. Return values of most borrowed
+5. Return values of longest time for borrowed book
+
 
 # Doing
-
 - Add database versioning (flyway or liquidbase)
     - Task: Implement Flyway or Liquibase in the project and create migration scripts to handle schema changes in the database.
 
@@ -24,14 +26,16 @@ This is servlet application
 10. Users must borrow only 1 book. They have to return the book before borrowing a new one
 11. Pagination
 12. User -> Book relationship
-13. Task: Write a complex SQL query to generate a report, such as a list of the most popular books by genre. Include
+13. Write Tests
+14. Task: Write a complex SQL query to generate a report, such as a list of the most popular books by genre. Include
     database indexing to optimize the query
     1. Most borrowed book
     2. Average time of borrow
-    3. Book not returned
+    3. Book not returnedg
 14. Statistics Table
 15. Add environments variables (Dev, Staging, Production)
 
+=======
 
 # Questions
 
