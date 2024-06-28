@@ -1,6 +1,6 @@
 -- Table: public.person
 
-DROP TABLE IF EXISTS public.person;
+DROP TABLE IF EXISTS public.person CASCADE;
 
 CREATE TABLE IF NOT EXISTS public.person
 (
@@ -21,7 +21,7 @@ ALTER TABLE IF EXISTS public.person
 
 -- Table: public.author
 
-DROP TABLE IF EXISTS public.author;
+DROP TABLE IF EXISTS public.author CASCADE;
 
 CREATE TABLE IF NOT EXISTS public.author
 (
@@ -36,7 +36,7 @@ ALTER TABLE IF EXISTS public.author
 
 -- Table: public.book
 
-DROP TABLE IF EXISTS public.book;
+DROP TABLE IF EXISTS public.book CASCADE;
 
 CREATE TABLE IF NOT EXISTS public.book
 (
