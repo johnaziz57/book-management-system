@@ -9,8 +9,8 @@ This is servlet application
 
 
 # Doing
-
-
+- Add database versioning (flyway or liquidbase)
+    - Task: Implement Flyway or Liquibase in the project and create migration scripts to handle schema changes in the database.
 
 # DONE
 
@@ -31,8 +31,11 @@ This is servlet application
     database indexing to optimize the query
     1. Most borrowed book
     2. Average time of borrow
-    3. Book not returned
-15. Statistics Table
+    3. Book not returnedg
+14. Statistics Table
+15. Add environments variables (Dev, Staging, Production)
+
+=======
 
 # Questions
 
