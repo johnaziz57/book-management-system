@@ -23,11 +23,11 @@ class AuthService constructor(
 
     fun register(registerRequest: RegisterRequest): RegisterResponse {
         if (userRepository.existsByUserName(registerRequest.username)) {
-            return RegisterResponse.FailureResponse("Can't register ${registerRequest.username}. A user with the same username already exists")
+            return RegisterResponse.Failure("Can't register ${registerRequest.username}. A user with the same username already exists")
         }
         val user = registerRequest.toUserEntity()
         userRepository.save(user.copy(password = passwordEncoder.encode(user.password)))
-        return RegisterResponse.SuccessResponse(jwtTokenProvider.generateToken(user.userName))
+        return RegisterResponse.Success(jwtTokenProvider.generateToken(user.userName))
     }
 
     fun login(loginRequest: LoginRequest): LoginResponse {

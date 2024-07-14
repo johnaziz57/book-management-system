@@ -3,9 +3,7 @@ package com.john.bookmanagementsystem.feature.book.service
 import com.john.bookmanagementsystem.commons.ServiceResponseException
 import com.john.bookmanagementsystem.feature.author.repository.AuthorRepository
 import com.john.bookmanagementsystem.feature.book.dto.BookDTO
-import com.john.bookmanagementsystem.feature.book.model.Book
-import com.john.bookmanagementsystem.feature.book.model.BookStatistics
-import com.john.bookmanagementsystem.feature.book.model.BorrowLog
+import com.john.bookmanagementsystem.feature.book.model.*
 import com.john.bookmanagementsystem.feature.book.repository.BookRepository
 import com.john.bookmanagementsystem.feature.book.repository.BookStatisticsRepository
 import com.john.bookmanagementsystem.feature.book.repository.BorrowLogRepository
@@ -16,7 +14,6 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import java.time.Clock
-import java.time.Duration
 import java.time.LocalDateTime
 
 @Service
@@ -65,20 +62,21 @@ class BookService(
     }
 
     @Transactional
-    fun borrowBook(bookId: Long, username: String): Boolean {
+    fun borrowBook(bookId: Long, username: String): BorrowBookResponse {
         val book = bookRepository.findById(bookId)
-            .orElseThrow { throw ServiceResponseException("Book doesn't exist", HttpStatus.BAD_REQUEST) }
-        val user = userRepository.findByUserName(username)
-            ?: throw ServiceResponseException("User is not found", HttpStatus.UNAUTHORIZED)
+            .orElseThrow { throw IllegalArgumentException("A book with id:$bookId can't be found") }
 
-        if (book.availableCopies < 1) throw ServiceResponseException(
-            "No copies available to borrow",
-            HttpStatus.FORBIDDEN
-        )
-        if (user.borrowedBooksCount >= MAXIMUM_ALLOWED_BORROWED_BOOKS) throw ServiceResponseException(
-            "User reached maximum amount of books to borrow",
-            HttpStatus.FORBIDDEN
-        )
+        // TODO is there a better way to get the user?
+        val user = userRepository.findByUserName(username)
+            ?: throw IllegalStateException("A user with username: $username, is trying to borrow a book, but user can't be found")
+
+        if (book.availableCopies < 1) {
+            return BorrowBookResponse.Failure("Trying to borrow book with id:${book.id}, but there are no available copies.")
+        }
+
+        if (user.borrowedBooksCount >= MAXIMUM_ALLOWED_BORROWED_BOOKS) {
+            return BorrowBookResponse.Failure("A user with username: $username, is ")
+        }
 
         val statistics = findBookStatistics(book)
 
@@ -90,10 +88,11 @@ class BookService(
                 returnedDate = null
             )
         )
-        bookStatisticsRepository.save(statistics.copy(borrowCount = statistics.borrowCount + 1))
+        bookStatisticsRepository.save(statistics.recalculateAfterBorrow())
         userRepository.save(user.copy(borrowedBooksCount = user.borrowedBooksCount + 1))
         bookRepository.save(book.copy(availableCopies = book.availableCopies - 1))
-        return true
+
+        return BorrowBookResponse.Success
     }
 
     @Transactional
@@ -110,15 +109,10 @@ class BookService(
             HttpStatus.UNAUTHORIZED
         )
         val statistics = findBookStatistics(book)
-
         val returnedDate = LocalDateTime.now(clock)
-        val previousBorrowCount = statistics.borrowCount - 1
-        val averageBorrowTime = (
-                (statistics.averageBorrowTime * previousBorrowCount) +
-                        Duration.between(borrowLog.borrowedDate, returnedDate).seconds
-                ) / statistics.borrowCount
 
-        bookStatisticsRepository.save(statistics.copy(averageBorrowTime = averageBorrowTime.toInt()))
+
+        bookStatisticsRepository.save(statistics.recalculateAfterReturn(borrowLog.borrowedDate))
         borrowLogRepository.save(borrowLog.copy(returnedDate = returnedDate))
         userRepository.save(user.copy(borrowedBooksCount = user.borrowedBooksCount - 1))
         bookRepository.save(book.copy(availableCopies = book.availableCopies + 1))
