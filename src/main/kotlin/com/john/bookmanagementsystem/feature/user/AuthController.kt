@@ -1,11 +1,11 @@
 package com.john.bookmanagementsystem.feature.user
 
-import com.john.bookmanagementsystem.feature.user.dto.AuthResponseDTO
-import com.john.bookmanagementsystem.feature.user.dto.LoginDTO
-import com.john.bookmanagementsystem.feature.user.dto.UserDTO
+import com.john.bookmanagementsystem.feature.user.dto.LoginRequest
+import com.john.bookmanagementsystem.feature.user.dto.LoginResponse
+import com.john.bookmanagementsystem.feature.user.dto.RegisterRequest
+import com.john.bookmanagementsystem.feature.user.dto.RegisterResponse
 import com.john.bookmanagementsystem.feature.user.service.AuthService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -14,17 +14,17 @@ import javax.validation.Valid
 
 @RestController
 @RequestMapping("/auth")
-class AuthController constructor(
+class AuthController(
     @Autowired private val authService: AuthService,
 ) {
 
     @PostMapping("login")
-    fun login(@RequestBody @Valid loginDTO: LoginDTO): ResponseEntity<AuthResponseDTO> {
-        return ResponseEntity.ok(authService.login(loginDTO))
+    fun login(@RequestBody @Valid loginRequest: LoginRequest): LoginResponse {
+        return authService.login(loginRequest)
     }
 
     @PostMapping("register")
-    fun register(@RequestBody @Valid userDTO: UserDTO): ResponseEntity<AuthResponseDTO> {
-        return ResponseEntity.ok(authService.register(userDTO))
+    fun register(@RequestBody @Valid registerRequest: RegisterRequest): RegisterResponse {
+        return authService.register(registerRequest)
     }
 }

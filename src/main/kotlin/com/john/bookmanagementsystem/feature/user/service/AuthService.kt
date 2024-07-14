@@ -1,13 +1,12 @@
 package com.john.bookmanagementsystem.feature.user.service
 
-import com.john.bookmanagementsystem.commons.ServiceResponseException
 import com.john.bookmanagementsystem.configuration.security.JwtTokenProvider
-import com.john.bookmanagementsystem.feature.user.dto.AuthResponseDTO
-import com.john.bookmanagementsystem.feature.user.dto.LoginDTO
-import com.john.bookmanagementsystem.feature.user.dto.UserDTO
+import com.john.bookmanagementsystem.feature.user.dto.LoginRequest
+import com.john.bookmanagementsystem.feature.user.dto.LoginResponse
+import com.john.bookmanagementsystem.feature.user.dto.RegisterRequest
+import com.john.bookmanagementsystem.feature.user.dto.RegisterResponse
 import com.john.bookmanagementsystem.feature.user.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
@@ -22,23 +21,25 @@ class AuthService constructor(
     @Autowired private val jwtTokenProvider: JwtTokenProvider
 ) {
 
-    fun register(userDTO: UserDTO): AuthResponseDTO {
-        if (userRepository.existsByUserName(userDTO.username)) {
-            throw ServiceResponseException("Username already exits", HttpStatus.BAD_REQUEST)
+    fun register(registerRequest: RegisterRequest): RegisterResponse {
+        if (userRepository.existsByUserName(registerRequest.username)) {
+            return RegisterResponse.FailureResponse("Can't register ${registerRequest.username}. A user with the same username already exists")
         }
-        val user = userDTO.toEntity()
+        val user = registerRequest.toUserEntity()
         userRepository.save(user.copy(password = passwordEncoder.encode(user.password)))
-
-        return AuthResponseDTO(jwtTokenProvider.generateToken(user.userName))
+        return RegisterResponse.SuccessResponse(jwtTokenProvider.generateToken(user.userName))
     }
 
-    fun login(loginDTO: LoginDTO): AuthResponseDTO {
-        val authentication = authenticationManager.authenticate(
-            UsernamePasswordAuthenticationToken(loginDTO.username, loginDTO.password)
-        )
-
-        SecurityContextHolder.getContext().authentication = authentication
-        val token = jwtTokenProvider.generateToken(loginDTO.username)
-        return AuthResponseDTO(token)
+    fun login(loginRequest: LoginRequest): LoginResponse {
+        try {
+            val authentication = authenticationManager.authenticate(
+                UsernamePasswordAuthenticationToken(loginRequest.username, loginRequest.password)
+            )
+            SecurityContextHolder.getContext().authentication = authentication
+            val token = jwtTokenProvider.generateToken(loginRequest.username)
+            return LoginResponse.Success(token)
+        } catch (e: Exception) {
+            return LoginResponse.Failure("Invalid credentials")
+        }
     }
 }
