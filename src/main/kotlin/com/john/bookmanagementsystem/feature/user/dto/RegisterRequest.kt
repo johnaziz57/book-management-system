@@ -12,22 +12,20 @@ data class RegisterRequest(
     @field:NotBlank(message = "Name is empty")
     val name: String,
 
-    @field:Size(max = 100, message = "User name is too long")
-    @field:NotBlank(message = "User name is empty")
-    val username: String,
+    @field:Size(max = 100, message = "userName is too long")
+    @field:NotBlank(message = "userName is empty")
+    val userName: String,
 
     @field:Size(min = 8, message = "Password is too short")
     val password: String
 ) {
     fun toUserEntity(): User {
-        return id?.let {
-            User(
-                id = id,
-                name = name,
-                userName = username,
-                password = password,
-                role = Role.USER
-            )
-        } ?: User(name = name, userName = username, password = password, role = Role.USER)
+        return User(
+            id = id,
+            name = name,
+            userName = userName,
+            password = password,
+            role = Role.USER
+        )
     }
 }

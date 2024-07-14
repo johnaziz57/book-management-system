@@ -22,8 +22,8 @@ class AuthService constructor(
 ) {
 
     fun register(registerRequest: RegisterRequest): RegisterResponse {
-        if (userRepository.existsByUserName(registerRequest.username)) {
-            return RegisterResponse.Failure("Can't register ${registerRequest.username}. A user with the same username already exists")
+        if (userRepository.existsByUserName(registerRequest.userName)) {
+            return RegisterResponse.Failure("Can't register ${registerRequest.userName}. A user with the same username already exists")
         }
         val user = registerRequest.toUserEntity()
         userRepository.save(user.copy(password = passwordEncoder.encode(user.password)))
