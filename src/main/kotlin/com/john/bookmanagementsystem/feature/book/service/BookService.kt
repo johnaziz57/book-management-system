@@ -3,7 +3,15 @@ package com.john.bookmanagementsystem.feature.book.service
 import com.john.bookmanagementsystem.commons.ServiceResponseException
 import com.john.bookmanagementsystem.feature.author.repository.AuthorRepository
 import com.john.bookmanagementsystem.feature.book.dto.BookDTO
-import com.john.bookmanagementsystem.feature.book.model.*
+import com.john.bookmanagementsystem.feature.book.model.Book
+import com.john.bookmanagementsystem.feature.book.model.BookStatistics
+import com.john.bookmanagementsystem.feature.book.model.BorrowBookResponse
+import com.john.bookmanagementsystem.feature.book.model.BorrowLog
+import com.john.bookmanagementsystem.feature.book.model.CreateBookResponse
+import com.john.bookmanagementsystem.feature.book.model.CreateBookResponseCreator
+import com.john.bookmanagementsystem.feature.book.model.ReturnBookResponse
+import com.john.bookmanagementsystem.feature.book.model.recalculateAfterBorrow
+import com.john.bookmanagementsystem.feature.book.model.recalculateAfterReturn
 import com.john.bookmanagementsystem.feature.book.repository.BookRepository
 import com.john.bookmanagementsystem.feature.book.repository.BookStatisticsRepository
 import com.john.bookmanagementsystem.feature.book.repository.BorrowLogRepository
@@ -41,13 +49,14 @@ class BookService(
     }
 
     @Transactional
-    fun createBook(bookDTO: BookDTO): BookDTO {
+    fun createBook(bookDTO: BookDTO): CreateBookResponse {
         if (findByISBN(bookDTO.ISBN) != null) {
-            throw ServiceResponseException("Book ISBN already exits", HttpStatus.INTERNAL_SERVER_ERROR)
+            throw IllegalArgumentException("A book  with ISBN=${bookDTO.ISBN} already exits")
         }
         val authors = bookDTO.authors.map { author ->
             authorRepository.findByName(author.name) ?: author.toEntity()
         }
+
         val bookEntity = bookDTO.toEntity().copy(authors = authors.toSet())
         return bookRepository.save(bookEntity).let {
 
@@ -57,18 +66,18 @@ class BookService(
                 )
             )
 
-            it.toDTO()
+            CreateBookResponseCreator().success(it.toDTO())
         }
     }
 
     @Transactional
     fun borrowBook(bookId: Long, username: String): BorrowBookResponse {
         val book = bookRepository.findById(bookId)
-            .orElseThrow { throw IllegalArgumentException("A book with id:$bookId can't be found") }
+            .orElseThrow { throw IllegalArgumentException("A book with id=$bookId can't be found") }
 
         // TODO is there a better way to get the user?
         val user = userRepository.findByUserName(username)
-            ?: throw IllegalStateException("A user with username: $username, is trying to borrow a book, but user can't be found")
+            ?: throw IllegalStateException("A user with username=$username, is trying to borrow a book, but user can't be found")
 
         if (book.availableCopies < 1) {
             return BorrowBookResponse.Failure("Trying to borrow book with id:${book.id}, but there are no available copies.")
@@ -96,27 +105,28 @@ class BookService(
     }
 
     @Transactional
-    fun returnBook(bookId: Long, username: String): Boolean {
+    fun returnBook(bookId: Long, username: String): ReturnBookResponse {
         val book = bookRepository.findById(bookId)
-            .orElseThrow { throw ServiceResponseException("Book doesn't exit", HttpStatus.BAD_REQUEST) }
-        val user = userRepository.findByUserName(username)
-            ?: throw ServiceResponseException("user is not found", HttpStatus.UNAUTHORIZED)
+            .orElseThrow { throw IllegalArgumentException("A book with id=$bookId can't be found") }
 
+        val user = userRepository.findByUserName(username)
+            ?: throw IllegalStateException("A user with username=$username, is trying to borrow a book, but user can't be found")
+
+
+        // TODO refactor
         user.id ?: throw ServiceResponseException("user is not saved", HttpStatus.UNAUTHORIZED)
 
-        val borrowLog = borrowLogRepository.findFirstUnreturnedBook(bookId, user.id) ?: throw ServiceResponseException(
-            "No related book was borrowed",
-            HttpStatus.UNAUTHORIZED
-        )
+        val borrowLog = borrowLogRepository.findFirstUnreturnedBook(bookId, user.id)
+            ?: throw IllegalArgumentException("Can't return book with id=$bookId. No such book was borrowed")
+
         val statistics = findBookStatistics(book)
         val returnedDate = LocalDateTime.now(clock)
-
 
         bookStatisticsRepository.save(statistics.recalculateAfterReturn(borrowLog.borrowedDate))
         borrowLogRepository.save(borrowLog.copy(returnedDate = returnedDate))
         userRepository.save(user.copy(borrowedBooksCount = user.borrowedBooksCount - 1))
         bookRepository.save(book.copy(availableCopies = book.availableCopies + 1))
-        return true
+        return ReturnBookResponse.Success
     }
 
     fun removeBook(id: Long) {
