@@ -1,6 +1,12 @@
 package com.john.bookmanagementsystem.feature.book.model
 
-import jakarta.persistence.*
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.Id
+import jakarta.persistence.Index
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.OneToOne
+import jakarta.persistence.Table
 import java.time.Duration
 import java.time.LocalDateTime
 
@@ -28,7 +34,7 @@ data class BookStatistics(
  */
 fun BookStatistics.recalculateAfterReturn(
     borrowDate: LocalDateTime,
-    returnedDate: LocalDateTime = LocalDateTime.now()
+    returnedDate: LocalDateTime
 ): BookStatistics {
     val previousBorrowCount = borrowCount - 1
     val newAverageBorrowTime = (

@@ -122,7 +122,7 @@ class BookService(
         val statistics = findBookStatistics(book)
         val returnedDate = LocalDateTime.now(clock)
 
-        bookStatisticsRepository.save(statistics.recalculateAfterReturn(borrowLog.borrowedDate))
+        bookStatisticsRepository.save(statistics.recalculateAfterReturn(borrowLog.borrowedDate, returnedDate))
         borrowLogRepository.save(borrowLog.copy(returnedDate = returnedDate))
         userRepository.save(user.copy(borrowedBooksCount = user.borrowedBooksCount - 1))
         bookRepository.save(book.copy(availableCopies = book.availableCopies + 1))
