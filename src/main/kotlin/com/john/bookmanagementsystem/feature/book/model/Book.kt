@@ -22,7 +22,7 @@ data class Book(
     val id: Long? = null,
     val title: String = "",
     @field:ISBN // this a different validation on the persistence level
-    @Column(unique = true)
+    @Column(unique = true, name = "isbn")
     val ISBN: String = "",
     @ManyToMany(cascade = [CascadeType.MERGE, CascadeType.PERSIST])
     @JoinTable(
