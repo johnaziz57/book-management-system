@@ -1,9 +1,9 @@
 package com.john.bookmanagementsystem.feature.book.service
 
-import com.john.bookmanagementsystem.commons.ServiceResponseException
 import com.john.bookmanagementsystem.feature.author.repository.AuthorRepository
 import com.john.bookmanagementsystem.feature.book.model.Book
 import com.john.bookmanagementsystem.feature.book.model.BookStatistics
+import com.john.bookmanagementsystem.feature.book.model.BorrowBookResponse
 import com.john.bookmanagementsystem.feature.book.model.BorrowLog
 import com.john.bookmanagementsystem.feature.book.repository.BookRepository
 import com.john.bookmanagementsystem.feature.book.repository.BookStatisticsRepository
@@ -13,7 +13,6 @@ import com.john.bookmanagementsystem.feature.user.model.User
 import com.john.bookmanagementsystem.feature.user.repository.UserRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mock
 import org.mockito.Mockito.anyLong
@@ -133,7 +132,8 @@ class BookServiceTest {
         )
         `when`(bookStatisticsRepository.findByBook(book)).thenReturn(bookStatistics)
 
-        assertThrows<ServiceResponseException> { subject.borrowBook(1, username) }
+        assert(subject.borrowBook(1, username) is BorrowBookResponse.Failure)
+
     }
 
     @Test
